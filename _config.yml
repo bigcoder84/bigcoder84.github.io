@@ -4,9 +4,9 @@
 
 # Site
 title: 听到微笑的博客
-subtitle:
+subtitle: 
 description: 该网站是“听到微笑”的个人博客，主要涵盖内容为：Web前端、Java后端、Linux操作系统、行业新闻、科技数码等
-keywords:
+keywords: 
 author: 听到微笑
 language: zh-CN
 timezone: 
@@ -15,7 +15,8 @@ timezone:
 #url: https://tianjindong.github.io
 url: https://tianjindong.gitee.io
 root: /
-permalink: :year/:month/:day/:title/
+#permalink: :year/:month/:day/:title/
+permalink: article/:abbrlink.html
 permalink_defaults:
 
 # Directory

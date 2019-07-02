@@ -63,9 +63,12 @@ donate:
     
 # Share plugin settings
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Share
-share:
+#share:
     # Share plugin name
-    type: 
+#    type: 
+share:
+    type: sharethis
+    install_url: //platform-api.sharethis.com/js/sharethis.js#property=5d1b4ddd55a8b200110cdf62&product=social-ab
 # Sidebar settings.
 # Please be noted that a sidebar is only visible when it has at least one widget
 sidebar:
@@ -94,9 +97,9 @@ widgets:
         # Author's current location to be shown in the profile widget
         location: 湖北武汉
         # Path or URL to the avatar to be shown in the profile widget
-        avatar: 
+        avatar:
         # Email address for the Gravatar to be shown in the profile widget
-        gravatar: 
+        gravatar:
         # Whether to show avatar image rounded or square
         avatar_rounded: false
         # Path or URL for the follow button
@@ -104,14 +107,15 @@ widgets:
         # Links to be shown on the bottom of the profile widget
         social_links:
             Github:
-                icon: iconfont icon-GitHub
+                icon: iconfont-github icon-GitHub
                 url: 'https://github.com/tianjindong'
             CSDN:
-                icon: iconfont icon-CN_csdnnet
+                icon: iconfont-csdn icon-CN_csdnnet
                 url: 'https://blog.csdn.net/tianjindong0804'
-            个人主页:
-                icon: fab fa-dribbble
-                url: 'http://www.tianjindong.cn'
+            微博:
+                #icon: fab fa-dribbble
+                icon: iconfont-weibo icon-weibo
+                url: 'https://weibo.com/6482358106'
             RSS:
                 icon: fas fa-rss
                 url: /

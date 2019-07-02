@@ -43,3 +43,6 @@
         $('.navbar-main .catalogue').on('click', toggleToc);
     }
 })(jQuery);
+console.log("\n欢迎访问听到微笑的博客！\n");
+console.log("\n联系作者：tianjindong0804@126.com");
+console.log("\nPowered by Hexo & Icarus");

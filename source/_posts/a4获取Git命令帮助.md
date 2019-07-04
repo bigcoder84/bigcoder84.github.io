@@ -1,5 +1,5 @@
 ---
-title: 四.Git获取系统帮助
+title: 四.获取Git命令帮助
 toc: true
 categories:
   - Git

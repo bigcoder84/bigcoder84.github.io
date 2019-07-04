@@ -96,18 +96,18 @@
 <% if (!index && (post.prev || post.next)) { %>
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
-        <% if (post.prev){ %>
-        <div class="level-start">
-            <a class="level level-item has-link-grey <%= !post.prev ? 'is-hidden-mobile' : '' %> article-nav-prev" href="<%- url_for(post.prev.path) %>">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item"><%= post.prev.title %></span>
-            </a>
-        </div>
-        <% } %>
         <% if (post.next){ %>
         <div class="level-end">
             <a class="level level-item has-link-grey <%= !post.next ? 'is-hidden-mobile' : '' %> article-nav-next" href="<%- url_for(post.next.path) %>">
+                <i class="level-item fas fa-chevron-left"></i>
                 <span class="level-item"><%= post.next.title %></span>
+            </a>
+        </div>
+        <% } %>
+        <% if (post.prev){ %>
+        <div class="level-start">
+            <a class="level level-item has-link-grey <%= !post.prev ? 'is-hidden-mobile' : '' %> article-nav-prev" href="<%- url_for(post.prev.path) %>">
+                <span class="level-item"><%= post.prev.title %></span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>

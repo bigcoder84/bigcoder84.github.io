@@ -123,7 +123,7 @@ widgets:
         # Widget name
         type: toc
         # Where should the widget be placed, left or right
-        position: right
+        position: left
     -
         # Widget name 友情链接工具栏
         type: links
@@ -147,7 +147,7 @@ widgets:
         # Widget name
         type: recent_posts
         # Where should the widget be placed, left or right
-        position: left
+        position: right
     -
         # Widget name
         type: archive

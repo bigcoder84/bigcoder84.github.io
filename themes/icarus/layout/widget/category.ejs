@@ -1,1 +1,3 @@
-<%- partial('categories') %>
+<% if (page.__page !== true && page.__post !== true) { %>
+	<%- partial('categories') %>
+<% } %>

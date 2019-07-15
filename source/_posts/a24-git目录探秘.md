@@ -1,6 +1,7 @@
 ---
 title: 二十四.git目录探秘
 toc: true
+thumbnail: /gallery/thumbnails/a0.jpg
 categories:
   - Git
   - Git工具

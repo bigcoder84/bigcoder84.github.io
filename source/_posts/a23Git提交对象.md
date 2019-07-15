@@ -1,6 +1,7 @@
 ---
 title: 二十三.Git提交对象
 toc: true
+thumbnail: /gallery/thumbnails/a0.jpg
 categories:
   - Git
   - Git工具

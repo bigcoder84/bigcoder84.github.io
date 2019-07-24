@@ -115,7 +115,7 @@ widgets:
             微博:
                 #icon: fab fa-dribbble
                 icon: iconfont-weibo icon-weibo
-                url: 'https://weibo.com/6482358106'
+                url: 'https://weibo.com/HearingSmile'
             RSS:
                 icon: fas fa-rss
                 url: /

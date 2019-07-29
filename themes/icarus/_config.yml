@@ -127,9 +127,9 @@ widgets:
                 #icon: fab fa-dribbble
                 icon: iconfont-weibo icon-weibo
                 url: 'https://weibo.com/HearingSmile'
-            RSS:
-                icon: fas fa-rss
-                url: /
+            Twitter:
+                icon: iconfont-twitter icon-twitter
+                url: 'https://twitter.com/HearingSmile'
     -
         # Widget name
         type: toc

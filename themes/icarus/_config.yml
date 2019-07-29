@@ -44,9 +44,20 @@ search:
     type: insight
 # Comment plugin settings
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Comment
-comment:
+#comment:
     # Name of the comment plugin
-    type: 
+#    type: 
+comment:
+    type: gitalk
+    owner: tianjindong        # (required) GitHub user name
+    repo: blog_comment          # (required) GitHub repository name
+    client_id: a362d7e659d5da0b4c24 # (required) OAuth application client id
+    client_secret: bfd2817b484ba4d45ad14e44bbf993fa353a4f2d # (required) OAuth application client secret
+    admin: tianjindong         # (required) GitHub repo owner and collaborators who can initialize github issues
+                            #            Can either be a string or an array.
+                            #            admin:
+                            #                - xxxxxx1
+                            #                - xxxxxx2
 # Donation entries
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Donation/
 donate:

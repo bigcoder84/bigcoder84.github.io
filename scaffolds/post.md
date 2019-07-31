@@ -1,10 +1,10 @@
 ---
 title: {{ title }}
 date: {{ date }}
-thumbnail: /gallery/thumbnails/x.png
+thumbnail: /gallery/thumbnails/x.jpg
 toc: true
 categories:
 tags:
 ---
 
-{% asset_img 1.png %}
+{% asset_img  .png %}

@@ -3,6 +3,7 @@ title: IDEA炫酷插件推荐
 thumbnail: /gallery/thumbnails/d1.jpg
 toc: true
 categories:
+  - 工具使用
   - IDEA
 tags:
   - IDEA插件

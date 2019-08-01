@@ -3,7 +3,7 @@ title: 二十一.Git文件对象
 toc: true
 categories:
   - Git
-  - Git工具
+  - Git内部原理
 tags:
   - Git
   - Git内部原理

@@ -4,7 +4,7 @@ toc: true
 thumbnail: /gallery/thumbnails/a0.jpg
 categories:
   - Git
-  - Git工具
+  - Git内部原理
 tags:
   - Git
   - Git内部原理

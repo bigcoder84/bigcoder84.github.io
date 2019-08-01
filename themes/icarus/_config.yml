@@ -27,6 +27,7 @@ navbar:
         分类: /categories
         标签: /tags
         历史: /archives
+        关于: /about.html
 
 # Article display settings
 article:

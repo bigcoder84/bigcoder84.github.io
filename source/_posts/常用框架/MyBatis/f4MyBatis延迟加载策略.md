@@ -111,7 +111,7 @@ public interface TagMapper {
         <id column="id" property="id"></id>
         <result column="title" property="title"></result>
         <result column="content" property="content"></result>
-        <collection  property="tags" ofType="Tag" column="id"  select="com.tjd.spring_mybatis_plus.mapper.TagMapper.getTagsByArticleId" ></collection>
+        <collection  property="tags" ofType="Tag" column="id" fetchType="lazy"  select="com.tjd.spring_mybatis_plus.mapper.TagMapper.getTagsByArticleId" ></collection>
     </resultMap>
 
     <select id="getArticleById" resultMap="articleMap" parameterType="long">
@@ -150,7 +150,7 @@ collection标签属性:
     <resultMap id="tagMap" type="Tag">
         <id column="id" property="id"></id>
         <result column="content" property="content"></result>
-        <association property="article" column="article_id" javaType="Article" select="com.tjd.spring_mybatis_plus.mapper.ArticleMapper.getArticleById"></association>
+        <association property="article" column="article_id" javaType="Article" fetchType="lazy" select="com.tjd.spring_mybatis_plus.mapper.ArticleMapper.getArticleById"></association>
     </resultMap>
     
     <!--并没有采用关联查询-->

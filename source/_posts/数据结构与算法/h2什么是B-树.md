@@ -1,6 +1,6 @@
 ---
 title: 什么是B-树
-thumbnail: /gallery/thumbnails/h2.jpg
+thumbnail: /gallery/thumbnails/f6.jpg
 toc: true
 categories:
   - 数据结构

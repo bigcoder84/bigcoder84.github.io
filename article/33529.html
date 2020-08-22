@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>五.创建和克隆仓库 - 听到微笑的博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="一. 把已有的项目代码纳入Git管理12$ cd 项目所在路径  #先进入项目所在文件夹$ git init  #初始化仓库">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="五.创建和克隆仓库">
+<meta property="og:url" content="http://www.tianjindong.cn/article/33529.html">
+<meta property="og:site_name" content="听到微笑的博客">
+<meta property="og:description" content="一. 把已有的项目代码纳入Git管理12$ cd 项目所在路径  #先进入项目所在文件夹$ git init  #初始化仓库">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.tianjindong.cn/images/og_image.png">
+<meta property="og:updated_time" content="2020-08-22T06:32:33.589Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="五.创建和克隆仓库">
+<meta name="twitter:description" content="一. 把已有的项目代码纳入Git管理12$ cd 项目所在路径  #先进入项目所在文件夹$ git init  #初始化仓库">
+<meta name="twitter:image" content="http://www.tianjindong.cn/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.ico">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?81f9c1489f84c7a99b0bd377c9fb5de8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/iconfont.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="五.创建和克隆仓库" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/categories">分类</a>
+                
+                <a class="navbar-item" href="/tags">标签</a>
+                
+                <a class="navbar-item" href="/archives">历史</a>
+                
+                <a class="navbar-item" href="/music.html">音乐</a>
+                
+                <a class="navbar-item" href="/about.html">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+        
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-07-04T03:41:49.000Z">2019-07-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Git/">Git</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/Git/Git基础/">Git基础</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 632 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                五.创建和克隆仓库
+            
+        </h1>
+        <div class="content">
+            <h2 id="一-把已有的项目代码纳入Git管理"><a href="#一-把已有的项目代码纳入Git管理" class="headerlink" title="一. 把已有的项目代码纳入Git管理"></a>一. 把已有的项目代码纳入Git管理</h2><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> cd 项目所在路径  #先进入项目所在文件夹</span><br><span class="line"><span class="hljs-meta">$</span> git init  #初始化仓库</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="二-创建一个新的仓库"><a href="#二-创建一个新的仓库" class="headerlink" title="二. 创建一个新的仓库"></a>二. 创建一个新的仓库</h2><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> cd 某个文件夹</span><br><span class="line"><span class="hljs-meta">$</span> git init 仓库名称  #git会在当前目录下，创建与项目名称相同的文件夹</span><br><span class="line"><span class="hljs-meta">$</span> cd 仓库名称  #进入仓库</span><br></pre></td></tr></table></figure>
+
+<img src="/article/33529/6.png">
+
+<p>创建仓库后，git会在仓库中创建一个<code>.git</code>的文件夹，这个文件夹时git仓库的核心文件。</p>
+<h2 id="三-克隆现有仓库"><a href="#三-克隆现有仓库" class="headerlink" title="三. 克隆现有仓库"></a>三. 克隆现有仓库</h2><p>​    如果你想获得一份已经存在了的 Git 仓库的拷贝，比如说，你想为某个开源项目贡献自己的一份力，这时就要用到 <code>git clone</code> 命令。 如果你对其它的 VCS 系统（比如说Subversion）很熟悉，请留心一下你所使用的命令是”clone”而不是”checkout”。 这是 Git 区别于其它版本控制系统的一个重要特性，Git 克隆的是该 Git 仓库服务器上的几乎所有数据，而不是仅仅复制完成你的工作所需要文件。 当你执行 <code>git clone</code> 命令的时候，默认配置下远程 Git 仓库中的每一个文件的每一个版本都将被拉取下来。 事实上，如果你的服务器的磁盘坏掉了，你通常可以使用任何一个克隆下来的用户端来重建服务器上的仓库。</p>
+<p>​    克隆仓库的命令格式是 <code>git clone [url]</code> 。 比如，要克隆 Git 的可链接库 libgit2，可以用下面的命令：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git clone https://github.com/tianjindong/test [自定义仓库名]  #如果本地有同名仓库，那么必须指定一个另外的文件夹名，来保存克隆下来的文件</span><br></pre></td></tr></table></figure>
+
+<p>​    Git 支持多种数据传输协议。 上面的例子使用的是 <code>https://</code> 协议，不过你也可以使用 <code>git://</code> 协议或者使用 SSH 传输协议，比如 <code>user@server:path/to/repo.git</code> 。</p>
+<p>​    或者克隆本地的git仓库：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git clone 需要克隆的仓库目录 克隆后的目标文件夹名称</span><br></pre></td></tr></table></figure>
+
+<img src="/article/33529/7.png">
+
+<h2 id="四-克隆不带工作区的版本库"><a href="#四-克隆不带工作区的版本库" class="headerlink" title="四. 克隆不带工作区的版本库"></a>四. 克隆不带工作区的版本库</h2><p>我们可以使用<code>--bare</code>选项来创建一个不带工作区的版本库。这对于服务器端的版本库来说是非常有用的。</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --bare &lt;url&gt; &lt;仓库名&gt;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Git/">Git</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5d1b4ddd55a8b200110cdf62&amp;product=social-ab" async="async"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechat.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/article/7307.html">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">四.获取Git命令帮助</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/article/54773.html">
+                <span class="level-item">六.通过gitignore文件忽略工作区的文件</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'a362d7e659d5da0b4c24',
+        clientSecret: 'bfd2817b484ba4d45ad14e44bbf993fa353a4f2d',
+        id: '3c23c312e0e8c48bd0d6de376b217ac3',
+        repo: 'blog_comment',
+        owner: 'tianjindong',
+        admin: "tianjindong"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-128x128 has-mb-6" src="/images/avatar.png" alt="听到微笑">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        听到微笑
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Web Developer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国 上海</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        53
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        19
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        28
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/tianjindong" target="_blank">
+                关注我</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/tianjindong">
+                
+                <i class="iconfont-github icon-GitHub"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Gitee" href="https://gitee.com/tianjindong">
+                
+                <i class="iconfont-gitee icon-gitee"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/tianjindong0804">
+                
+                <i class="iconfont-csdn icon-CN_csdnnet"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="https://twitter.com/HearingSmile">
+                
+                <i class="iconfont-twitter icon-twitter"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#一-把已有的项目代码纳入Git管理">
+        <span class="has-mr-6">1</span>
+        <span>一. 把已有的项目代码纳入Git管理</span>
+        </a></li><li>
+        <a class="is-flex" href="#二-创建一个新的仓库">
+        <span class="has-mr-6">2</span>
+        <span>二. 创建一个新的仓库</span>
+        </a></li><li>
+        <a class="is-flex" href="#三-克隆现有仓库">
+        <span class="has-mr-6">3</span>
+        <span>三. 克隆现有仓库</span>
+        </a></li><li>
+        <a class="is-flex" href="#四-克隆不带工作区的版本库">
+        <span class="has-mr-6">4</span>
+        <span>四. 克隆不带工作区的版本库</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+    
+    
+        <div class="column-right-shadow  is-sticky">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/article/54308.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h4.jpg" alt="B树和B+树与磁盘读写之间的联系">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-24T02:20:31.000Z">2019-08-24</time></div>
+                    <a href="/article/54308.html" class="has-link-black-ter is-size-6">B树和B+树与磁盘读写之间的联系</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/21035.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h3.jpg" alt="什么是B+树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:25:05.000Z">2019-08-19</time></div>
+                    <a href="/article/21035.html" class="has-link-black-ter is-size-6">什么是B+树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/8567.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:24:50.000Z">2019-08-19</time></div>
+                    <a href="/article/8567.html" class="has-link-black-ter is-size-6">什么是B-树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/62369.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h1.jpg" alt="什么是一致性Hash算法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-16T07:27:10.000Z">2019-08-16</time></div>
+                    <a href="/article/62369.html" class="has-link-black-ter is-size-6">什么是一致性Hash算法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/59694.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/c3.jpg" alt="深入解析LinkedHashMap">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-15T11:17:33.000Z">2019-08-15</time></div>
+                    <a href="/article/59694.html" class="has-link-black-ter is-size-6">深入解析LinkedHashMap</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java基础/">Java基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="五.创建和克隆仓库" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 听到微笑&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

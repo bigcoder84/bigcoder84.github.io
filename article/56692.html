@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>Maven生命周期与插件 - 听到微笑的博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="除了坐标、依赖以及仓库以外，Maven另外两个核心概念是生命周期和插件。">
+<meta name="keywords" content="Maven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven生命周期与插件">
+<meta property="og:url" content="http://www.tianjindong.cn/article/56692.html">
+<meta property="og:site_name" content="听到微笑的博客">
+<meta property="og:description" content="除了坐标、依赖以及仓库以外，Maven另外两个核心概念是生命周期和插件。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.tianjindong.cn/gallery/thumbnails/db2.jpg">
+<meta property="og:updated_time" content="2020-08-22T06:32:33.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maven生命周期与插件">
+<meta name="twitter:description" content="除了坐标、依赖以及仓库以外，Maven另外两个核心概念是生命周期和插件。">
+<meta name="twitter:image" content="http://www.tianjindong.cn/gallery/thumbnails/db2.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.ico">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?81f9c1489f84c7a99b0bd377c9fb5de8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/iconfont.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="Maven生命周期与插件" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/categories">分类</a>
+                
+                <a class="navbar-item" href="/tags">标签</a>
+                
+                <a class="navbar-item" href="/archives">历史</a>
+                
+                <a class="navbar-item" href="/music.html">音乐</a>
+                
+                <a class="navbar-item" href="/about.html">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+        
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/thumbnails/db2.jpg" alt="Maven生命周期与插件">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-08-12T07:26:32.000Z">2019-08-12</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/工具使用/">工具使用</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/工具使用/Maven/">Maven</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    25 分钟 读完 (大约 3688 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Maven生命周期与插件
+            
+        </h1>
+        <div class="content">
+            <p>除了坐标、依赖以及仓库以外，Maven另外两个核心概念是生命周期和插件。<a id="more"></a></p>
+<h2 id="什么是生命周期"><a href="#什么是生命周期" class="headerlink" title="什么是生命周期"></a><strong>什么是生命周期</strong></h2><p>​        Maven生命周期是为了对所有的构建过程进行抽象和统一。Maven从大量项目和构建工具中学习和反思，然后总结了一套高度完善的、易扩展的生命周期。这个生命周期包含了项目的清理、初始化、编译、测试、打包、集成测试、验证部署和站点生成等几乎所有步骤。也就是说，几乎所有项目的构建，都能映射到这样一个生命周期中上。</p>
+<p>​        Maven的生命周期是一个抽象的概念，这意味着生命周期本身不做任何实际的工作，在Maven的设计中，实际的任务（如编译源码）都交给插件来完成。这种设计思想与设计模式中<strong>模板模式（Template Pattern）</strong>非常类似。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbstrctBuild</span> </span>&#123;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">build</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        initialize();</span><br><span class="line">        compile();</span><br><span class="line">        test();</span><br><span class="line">        packagee();</span><br><span class="line">        integrationTest();</span><br><span class="line">        deploy();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">()</span></span>;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">compile</span><span class="hljs-params">()</span></span>;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span>; </span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">packagee</span><span class="hljs-params">()</span></span>;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">integrationTest</span><span class="hljs-params">()</span></span>;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deploy</span><span class="hljs-params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        模板模式在父类中定义了算法的整体结构，子类可以通过实现或者重写父类的方法来控制实际的行为，这样既保证了算法有足够的扩展性，又能够严格控制算法的整体结构。</p>
+<p>​        由于生命周期只是对项目构建过程的一种抽象，那么项目构建还是需要实际的程序来构建，这就引入了插件的概念。在Maven的生命周期中，每个构建步骤都可以绑定一个或多个插件行为，而且Maven为绝大多数构建步骤都提供了默认的插件绑定，这样大多数用户在使用Maven时不需要进行任何的插件配置即可完成项目的构建工作。</p>
+<h2 id="生命周期详解"><a href="#生命周期详解" class="headerlink" title="生命周期详解"></a><strong>生命周期详解</strong></h2><h3 id="三套生命周期"><a href="#三套生命周期" class="headerlink" title="三套生命周期"></a><strong>三套生命周期</strong></h3><p>​        Maven拥有三套相互独立的生命周期，他们分别是：clean、default、site。clean生命周期的目的是清理项目，default生命周期的目的是为了构建项目，而site生命周期的目的是建立项目站点。</p>
+<p>​        <code>Maven生命周期包含一些阶段（phase）</code>，这些阶段是有序的，并且后面的阶段依赖于前面的阶段，用户和Maven最直接的交互方式就是调用这些生命周期阶段。以clean生命周期为例，它包含的阶段有pre-clean、clean、post-clean。当用户调用pre-clean时只有pre-clean这个阶段会执行；当用户调用clean阶段时，pre-clean和clean阶段会得以执行；当用户调用post-clean阶段时，clean生命周期的三个阶段都会执行。</p>
+<p>​        较之于生命周期阶段的前后依赖关系，三套生命周期本身是相互独立的。用户仅调用clean生命周期的某个阶段并不会对其他生命周期产生影响。例如用户调用clean生命周期中的clean阶段时，并不会触发default以及Site生命周期中的任何阶段。</p>
+<h3 id="clean生命周期"><a href="#clean生命周期" class="headerlink" title="clean生命周期"></a><strong>clean生命周期</strong></h3><p>clean生命周期的目的是清理项目，它包含三个阶段：</p>
+<table>
+<thead>
+<tr>
+<th align="center">clean生命周期阶段</th>
+<th align="center">任务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">pre-clean</td>
+<td align="center">执行一些清理前需要完成的操作</td>
+</tr>
+<tr>
+<td align="center">clean</td>
+<td align="center">清理上一次构建生成的文件</td>
+</tr>
+<tr>
+<td align="center">post-clean</td>
+<td align="center">执行一些清理后需要完成的操作</td>
+</tr>
+</tbody></table>
+<h3 id="default生命周期"><a href="#default生命周期" class="headerlink" title="default生命周期"></a><strong>default生命周期</strong></h3><p>​        default生命周期定义了真正构建时所需要执行的所有步骤，它是三套生命周期中最核心的部分，default生命周期包含以下阶段：</p>
+<ul>
+<li>validate</li>
+<li>initialize</li>
+<li>generate-sources</li>
+<li>process-sources：处理项目的主资源文件。一般来说，是对src/main/resources目录内的内容进行变量替换等工作后，复制到项目输出的主classpath下。</li>
+<li>generate-resources</li>
+<li>process-resources</li>
+<li>compile：编译项目的主源码。一般来说，是编译src/main/java目录下的Java文件至项目输出的主classpath中。</li>
+<li>process-classes</li>
+<li>generate-test-sources</li>
+<li>process-test-sources：处理项目测试的资源文件。</li>
+<li>generate-test-resources</li>
+<li>process-test-resources</li>
+<li>test-compile：编译项目的测试代码</li>
+<li>process-test-classes</li>
+<li>test：使用单元测试框架进行测试，测试代码不会被打包或部署</li>
+<li>prepare-package</li>
+<li>package：接受编译好的代码，将其打包为可发布的格式，如JAR</li>
+<li>pre-integration-test</li>
+<li>integration-test</li>
+<li>post-integration-test</li>
+<li>verify</li>
+<li>install：将打包好的文件安装到本地仓库中，方便其他Maven项目使用。</li>
+<li>deploy：将最终的包复制到远程仓库，供其他开发人员或Maven项目使用</li>
+</ul>
+<h3 id="site生命周期"><a href="#site生命周期" class="headerlink" title="site生命周期"></a><strong>site生命周期</strong></h3><p>​        site生命周期的目的是建立和发布项目的站点，Maven能够基于POM所包含的信息，自动生成一个友好的站点，方便团队交流和发布项目信息。该生命周期包含如下阶段：</p>
+<table>
+<thead>
+<tr>
+<th align="center">site生命周期阶段</th>
+<th align="center">任务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">pre-site</td>
+<td align="center">执行一些在生成项目站点之前需要完成的工作</td>
+</tr>
+<tr>
+<td align="center">site</td>
+<td align="center">生成项目站点</td>
+</tr>
+<tr>
+<td align="center">post-site</td>
+<td align="center">执行一些在生成项目站点之后需要完成的工作</td>
+</tr>
+<tr>
+<td align="center">site-deploy</td>
+<td align="center">将生成的项目站点发布到服务器上</td>
+</tr>
+</tbody></table>
+<h3 id="Maven命令与生命周期"><a href="#Maven命令与生命周期" class="headerlink" title="Maven命令与生命周期"></a><strong>Maven命令与生命周期</strong></h3><p>​    从命令行执行Maven任务的最主要方式就是调用Maven的生命周期阶段。下面我们就以一些常用的命令为例，解释其执行的生命周期阶段：</p>
+<ul>
+<li>mvn clean：调用clean生命周期中clean阶段，实际执行的阶段是pre-clean和clean阶段。</li>
+<li>mvn test：该命令调用default生命周期test阶段。实际上执行的是default生命周期中validate到test的所有阶段</li>
+<li>mvn clean install：该命令调用clean生命周期的clean阶段，以及default生命周期中的install阶段。实际执行的阶段为clean生命周期的pre-clean、clean阶段，以及default生命周期的从validate至install的所有阶段。</li>
+</ul>
+<h2 id="插件目标"><a href="#插件目标" class="headerlink" title="插件目标"></a><strong>插件目标</strong></h2><p>​        对于插件本身，为了能够复用代码，他往往能够完成多个任务。例如maven-dependency-plugin，它能够基于项目依赖做很多事情。它能够分析项目的依赖，帮助找到潜在的无用依赖；它能够列出项目的依赖树；帮助分析依赖来源；它能够列出项目所有已解析的依赖，等等。为每个这样的功能编写一个插件是很不可取的，因为这些任务背后有很多可以复用的代码，因此，<code>这些功能聚集在一个插件里，每个功能就是一个插件目标</code>。</p>
+<p>​        maven-dependency-plugin有十多个目标，每个目标对应一个功能，上述几个功能分别对应的插件目标为dependency:analyze、dependency:tree、dependency:list。这是一种通用的写法，冒号前面写插件的前缀，冒号后面是该插件的目标。</p>
+<h2 id="插件绑定"><a href="#插件绑定" class="headerlink" title="插件绑定"></a><strong>插件绑定</strong></h2><p>​        Maven的生命周期与插件相互绑定，用以完成实际的构建任务。具体而言，是生命周期的阶段与插件的目标相互绑定，以完成某个具体的构建任务。例如项目编译这一任务，它对应了default生命周期的compile阶段，而maven-dependency-plugin插件的compile目标能够完成该任务。因此，将它们绑定，就能实现项目编译的目的。</p>
+<h3 id="内置绑定"><a href="#内置绑定" class="headerlink" title="内置绑定"></a><strong>内置绑定</strong></h3><p>为了让用户几乎不用任何配置就能构架Maven项目，Maven默认为一些主要的生命周期阶段绑定了对应插件目标，具体的绑定见下表：</p>
+<p><strong>clean生命周期</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="center">生命周期阶段</th>
+<th align="center">插件目标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">pre-clean</td>
+<td align="center">—</td>
+</tr>
+<tr>
+<td align="center">clean</td>
+<td align="center">maven-clean-plugin:clean</td>
+</tr>
+<tr>
+<td align="center">post-clean</td>
+<td align="center">—</td>
+</tr>
+</tbody></table>
+<p><strong>site生命周期</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="center">生命周期阶段</th>
+<th align="center">插件目标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">pre-site</td>
+<td align="center">—</td>
+</tr>
+<tr>
+<td align="center">site</td>
+<td align="center">maven-site-plugin:site</td>
+</tr>
+<tr>
+<td align="center">post-site</td>
+<td align="center">—</td>
+</tr>
+<tr>
+<td align="center">site-deploy</td>
+<td align="center">maven-site-plugin:deploy</td>
+</tr>
+</tbody></table>
+<p><strong>default生命周期</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="center">生命周期阶段</th>
+<th align="center">插件目标</th>
+<th align="center">执行任务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">process-resources</td>
+<td align="center">maven-resources-plugin:resources</td>
+<td align="center">复制主资源文件至主输出目录</td>
+</tr>
+<tr>
+<td align="center">compile</td>
+<td align="center">maven-compiler-plugin:compile</td>
+<td align="center">编译主代码至主输出目录</td>
+</tr>
+<tr>
+<td align="center">process-test-resources</td>
+<td align="center">maven-resources-plugin:testResources</td>
+<td align="center">复制测试资源文件至测试输出目录</td>
+</tr>
+<tr>
+<td align="center">test-compile</td>
+<td align="center">maven-compiler-plugin:testCompile</td>
+<td align="center">编译测试代码值测试输出目录</td>
+</tr>
+<tr>
+<td align="center">test</td>
+<td align="center">maven-surefire-plugin:test</td>
+<td align="center">执行测试用例</td>
+</tr>
+<tr>
+<td align="center">package</td>
+<td align="center">maven-jar-plugin:jar</td>
+<td align="center">将项目打包为jar，如果打包为war则不是该插件目标</td>
+</tr>
+<tr>
+<td align="center">install</td>
+<td align="center">maven-install-plugin:install</td>
+<td align="center">将项目输出构建安装到本地仓库</td>
+</tr>
+<tr>
+<td align="center">deploy</td>
+<td align="center">maven-deploy-plugin:deploy</td>
+<td align="center">将项目输出构建部署到远程仓库</td>
+</tr>
+</tbody></table>
+<p>​    读者可以从Maven命令行输出中看到项目构建过程中执行了哪些插件目标，例如我们执行 mvn clean package命令输出如下信息：</p>
+<img src="/article/56692/15.png">
+
+<h3 id="自定义绑定"><a href="#自定义绑定" class="headerlink" title="自定义绑定"></a><strong>自定义绑定</strong></h3><p>​        除了内置绑定以外，用户还能够自己选择将某个插件目标绑定到生命周期的某个阶段上。</p>
+<p>​        一个常见的例子是创建项目的源码JAR包，内置的插件绑定关系中并没有涉及到当前任务，因此需要用户自行配置。maven-source-plugin可以帮助我们完成这个任务，它的jar-no-fork目标能够将项目的主代码打包成jar文件，我们可以将其绑定到default生命周期的verify阶段上，在执行完成测试后和安装构件前创建源码jar包：</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span></span><br><span class="line">	    <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></span><br><span class="line">	        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">	        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-source-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">	        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">	        <span class="hljs-tag">&lt;<span class="hljs-name">executions</span>&gt;</span></span><br><span class="line">	            <span class="hljs-tag">&lt;<span class="hljs-name">execution</span>&gt;</span></span><br><span class="line">	                <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>attach-sources<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span></span><br><span class="line">	                <span class="hljs-tag">&lt;<span class="hljs-name">phase</span>&gt;</span>verify<span class="hljs-tag">&lt;/<span class="hljs-name">phase</span>&gt;</span></span><br><span class="line">	                <span class="hljs-tag">&lt;<span class="hljs-name">goals</span>&gt;</span></span><br><span class="line">	                    <span class="hljs-tag">&lt;<span class="hljs-name">goal</span>&gt;</span>jar-no-fork<span class="hljs-tag">&lt;/<span class="hljs-name">goal</span>&gt;</span></span><br><span class="line">	                <span class="hljs-tag">&lt;/<span class="hljs-name">goals</span>&gt;</span></span><br><span class="line">	            <span class="hljs-tag">&lt;/<span class="hljs-name">execution</span>&gt;</span></span><br><span class="line">	        <span class="hljs-tag">&lt;/<span class="hljs-name">executions</span>&gt;</span></span><br><span class="line">	    <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​        groupId、artifactId、version仍然是定位插件的基本坐标，而<code>&lt;executions&gt;</code>是用于插件执行配置，executions下每一个execution子元素可以用来配置一个任务。该例中配置了一个id为attach-sources的任务，通过phase配置，将其绑定到verify生命周期阶段上，再通过<code>&lt;goals&gt;</code>配置指定要执行的插件目标。</p>
+<p>​        需要指出的是：有时候即使不指定phase元素配置生命周期阶段，插件目标仍能绑定到生命周期中去。这是因为<code>有些插件的目标在编写时已经定义了默认的生命周期阶段</code>。</p>
+<p>​        我们都知道，当插件绑定到不同的生命周期阶段中时，它的执行顺序由生命周期阶段顺序决定；<code>如果多个目标被绑定到同一个生命周期阶段，那么它们生命的先后顺序就决定了执行顺序</code>。</p>
+<h2 id="插件配置"><a href="#插件配置" class="headerlink" title="插件配置"></a><strong>插件配置</strong></h2><p>​        完成插件和生命周期的绑定后，用户还可以配置插件目标的参数，进一步调整插件目标所执行的任务，以满足项目需求。几乎所有Maven插件的目标都有一些可配置的参数，用户可以通过命令行和POM配置等方式来配置这些参数。</p>
+<h3 id="命令行插件的配置"><a href="#命令行插件的配置" class="headerlink" title="命令行插件的配置"></a><strong>命令行插件的配置</strong></h3><p>​        在日常的Maven使用中，我们会经常从命令行输入并执行Maven命令，用户可以在Maven命令中使用-D参数，并伴随一个“参数键=参数值”的形式，来配置插件目标的参数。</p>
+<p>​        例如，maven-surefire-plugin提供了一个maven.test.skip参数，当其值为true的时候，就会跳过执行测试。</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> mvn install -Dmaven.test.skip=true</span><br></pre></td></tr></table></figure>
+
+<p>​        参数-D是Java自带的，其功能是通过命令行设置一个Java系统属性，Maven简单的重用了该参数，在准备插件时检查系统属性，便实现了插件参数配置。</p>
+<h3 id="POM中插件全局配置"><a href="#POM中插件全局配置" class="headerlink" title="POM中插件全局配置"></a><strong>POM中插件全局配置</strong></h3><p>​        并不是所有参数都适合用命令行参数配置，有些参数不会经常改变，甚至根本不会改变，若每次使用maven命令都带上参数，显得特别繁琐。此时我们可以在POM中进行插件的全局配置。</p>
+<p>​        用户可以在声明插件时，对插件进行一个全局配置。也就是说所有基于该插件目标的任务，都会使用这些配置，例如maven-compiler-plugin告诉它编译Java1.5版本的源文件，生成JVM1.5兼容的字节码文件：</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.7.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span></span><br><span class="line">	    <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span></span><br><span class="line">	    <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span></span><br><span class="line">	    <span class="hljs-tag">&lt;<span class="hljs-name">encoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">encoding</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用命令行调用插件"><a href="#使用命令行调用插件" class="headerlink" title="使用命令行调用插件"></a><strong>使用命令行调用插件</strong></h2><p>​        有些插件不适合绑定到生命周期上，例如maven-dependency-plugin插件，它使用来分析项目的依赖的插件，我们不需要在构建项目时显示依赖树，我们只需要在需要的时候调用它即可。从命令行调用插件的格式如下：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> mvn [options] [&lt;goal(s)&gt;] [&lt;phase(s)&gt;]</span><br></pre></td></tr></table></figure>
+
+<p>​        就拿maven-dependency-plugin为例：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> mvn org.apache.maven.plugins:maven-dependency-plugin:2.1:tree</span><br></pre></td></tr></table></figure>
+
+<p>​        这条命令非常清晰，里面写明了插件的groupId、artifactId、version、goal，它的意思是调用maven-dependency-plugin 2.1版本插件的tree目标，显示项目的依赖树。</p>
+<p>​        但是上面这条命令显得过于繁琐，我们可以执行下列命令，到达同样的效果：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> mvn dependency:tree</span><br></pre></td></tr></table></figure>
+
+<p>​        dependency是什么呢？它是看上去不是groupId、artifactId、version、goal中任意一个，这里引入<code>目标前缀（Goal Prefix）的概念，dependency就是maven-dependency-plugin的前缀，有了目标前缀，Maven就能找到对应插件的artifactId</code>。</p>
+<h2 id="查看插件的描述信息"><a href="#查看插件的描述信息" class="headerlink" title="查看插件的描述信息"></a><strong>查看插件的描述信息</strong></h2><p>​        前面我们提到了目标前缀的概念，我们到底如何查看插件的目标前缀呢？我们可以借助<code>maven-help-plugin</code>插件来实现这个任务。</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#</span> 注意：在描述插件时可以省略版本信息，让Maven自动获取最新版本来进行表述</span><br><span class="line"><span class="hljs-meta">$</span> mvn help:describe -D plugin=org.apache.maven.plugins:maven-dependency-plugin:2.1</span><br></pre></td></tr></table></figure>
+
+<img src="/article/56692/16.png">
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Maven/">Maven</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5d1b4ddd55a8b200110cdf62&amp;product=social-ab" async="async"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechat.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/article/22321.html">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Maven到底是什么</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/article/17488.html">
+                <span class="level-item">真正理解Maven的聚合与继承</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'a362d7e659d5da0b4c24',
+        clientSecret: 'bfd2817b484ba4d45ad14e44bbf993fa353a4f2d',
+        id: 'c6d620f43ada69a8a3f6c857fb7157c5',
+        repo: 'blog_comment',
+        owner: 'tianjindong',
+        admin: "tianjindong"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-128x128 has-mb-6" src="/images/avatar.png" alt="听到微笑">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        听到微笑
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Web Developer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国 上海</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        53
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        19
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        28
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/tianjindong" target="_blank">
+                关注我</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/tianjindong">
+                
+                <i class="iconfont-github icon-GitHub"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Gitee" href="https://gitee.com/tianjindong">
+                
+                <i class="iconfont-gitee icon-gitee"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/tianjindong0804">
+                
+                <i class="iconfont-csdn icon-CN_csdnnet"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="https://twitter.com/HearingSmile">
+                
+                <i class="iconfont-twitter icon-twitter"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#什么是生命周期">
+        <span class="has-mr-6">1</span>
+        <span>什么是生命周期</span>
+        </a></li><li>
+        <a class="is-flex" href="#生命周期详解">
+        <span class="has-mr-6">2</span>
+        <span>生命周期详解</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#三套生命周期">
+        <span class="has-mr-6">2.1</span>
+        <span>三套生命周期</span>
+        </a></li><li>
+        <a class="is-flex" href="#clean生命周期">
+        <span class="has-mr-6">2.2</span>
+        <span>clean生命周期</span>
+        </a></li><li>
+        <a class="is-flex" href="#default生命周期">
+        <span class="has-mr-6">2.3</span>
+        <span>default生命周期</span>
+        </a></li><li>
+        <a class="is-flex" href="#site生命周期">
+        <span class="has-mr-6">2.4</span>
+        <span>site生命周期</span>
+        </a></li><li>
+        <a class="is-flex" href="#Maven命令与生命周期">
+        <span class="has-mr-6">2.5</span>
+        <span>Maven命令与生命周期</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#插件目标">
+        <span class="has-mr-6">3</span>
+        <span>插件目标</span>
+        </a></li><li>
+        <a class="is-flex" href="#插件绑定">
+        <span class="has-mr-6">4</span>
+        <span>插件绑定</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#内置绑定">
+        <span class="has-mr-6">4.1</span>
+        <span>内置绑定</span>
+        </a></li><li>
+        <a class="is-flex" href="#自定义绑定">
+        <span class="has-mr-6">4.2</span>
+        <span>自定义绑定</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#插件配置">
+        <span class="has-mr-6">5</span>
+        <span>插件配置</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#命令行插件的配置">
+        <span class="has-mr-6">5.1</span>
+        <span>命令行插件的配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#POM中插件全局配置">
+        <span class="has-mr-6">5.2</span>
+        <span>POM中插件全局配置</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#使用命令行调用插件">
+        <span class="has-mr-6">6</span>
+        <span>使用命令行调用插件</span>
+        </a></li><li>
+        <a class="is-flex" href="#查看插件的描述信息">
+        <span class="has-mr-6">7</span>
+        <span>查看插件的描述信息</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+    
+    
+        <div class="column-right-shadow  is-sticky">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/article/54308.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h4.jpg" alt="B树和B+树与磁盘读写之间的联系">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-24T02:20:31.000Z">2019-08-24</time></div>
+                    <a href="/article/54308.html" class="has-link-black-ter is-size-6">B树和B+树与磁盘读写之间的联系</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/21035.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h3.jpg" alt="什么是B+树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:25:05.000Z">2019-08-19</time></div>
+                    <a href="/article/21035.html" class="has-link-black-ter is-size-6">什么是B+树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/8567.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:24:50.000Z">2019-08-19</time></div>
+                    <a href="/article/8567.html" class="has-link-black-ter is-size-6">什么是B-树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/62369.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h1.jpg" alt="什么是一致性Hash算法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-16T07:27:10.000Z">2019-08-16</time></div>
+                    <a href="/article/62369.html" class="has-link-black-ter is-size-6">什么是一致性Hash算法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/59694.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/c3.jpg" alt="深入解析LinkedHashMap">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-15T11:17:33.000Z">2019-08-15</time></div>
+                    <a href="/article/59694.html" class="has-link-black-ter is-size-6">深入解析LinkedHashMap</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java基础/">Java基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="Maven生命周期与插件" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 听到微笑&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>MyBatis与Spring整合步骤 - 听到微笑的博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="在前段的工作学习中，自己大多数都在使用MyBatis，但是最近有独立搭建SSM环境的需求，所以博主就想着写一篇框架整合的博文，对整合过程进行一个总结">
+<meta name="keywords" content="MyBatis,Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis与Spring整合步骤">
+<meta property="og:url" content="http://www.tianjindong.cn/article/41666.html">
+<meta property="og:site_name" content="听到微笑的博客">
+<meta property="og:description" content="在前段的工作学习中，自己大多数都在使用MyBatis，但是最近有独立搭建SSM环境的需求，所以博主就想着写一篇框架整合的博文，对整合过程进行一个总结">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.tianjindong.cn/gallery/thumbnails/f2.jpg">
+<meta property="og:updated_time" content="2020-08-22T06:32:33.649Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis与Spring整合步骤">
+<meta name="twitter:description" content="在前段的工作学习中，自己大多数都在使用MyBatis，但是最近有独立搭建SSM环境的需求，所以博主就想着写一篇框架整合的博文，对整合过程进行一个总结">
+<meta name="twitter:image" content="http://www.tianjindong.cn/gallery/thumbnails/f2.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.ico">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?81f9c1489f84c7a99b0bd377c9fb5de8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/iconfont.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="MyBatis与Spring整合步骤" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/categories">分类</a>
+                
+                <a class="navbar-item" href="/tags">标签</a>
+                
+                <a class="navbar-item" href="/archives">历史</a>
+                
+                <a class="navbar-item" href="/music.html">音乐</a>
+                
+                <a class="navbar-item" href="/about.html">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+        
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/thumbnails/f2.jpg" alt="MyBatis与Spring整合步骤">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-07-27T11:20:13.000Z">2019-07-27</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/常用框架/">常用框架</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/常用框架/MyBatis/">MyBatis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分钟 读完 (大约 1185 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                MyBatis与Spring整合步骤
+            
+        </h1>
+        <div class="content">
+            <p>在前段的工作学习中，自己大多数都在使用MyBatis，但是最近有独立搭建SSM环境的需求，所以博主就想着写一篇框架整合的博文，对整合过程进行一个总结<a id="more"></a>：</p>
+<h2 id="第一步：引入jar包"><a href="#第一步：引入jar包" class="headerlink" title="第一步：引入jar包"></a>第一步：引入jar包</h2><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">junit.version</span>&gt;</span>4.12<span class="hljs-tag">&lt;/<span class="hljs-name">junit.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">spring.version</span>&gt;</span>4.2.4.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">spring.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">mybatis.version</span>&gt;</span>3.2.8<span class="hljs-tag">&lt;/<span class="hljs-name">mybatis.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">mybatis.spring.version</span>&gt;</span>1.2.2<span class="hljs-tag">&lt;/<span class="hljs-name">mybatis.spring.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">mybatis.paginator.version</span>&gt;</span>1.2.15<span class="hljs-tag">&lt;/<span class="hljs-name">mybatis.paginator.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">pagehelper.version</span>&gt;</span>3.4.2-fix<span class="hljs-tag">&lt;/<span class="hljs-name">pagehelper.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">mysql.version</span>&gt;</span>5.1.32<span class="hljs-tag">&lt;/<span class="hljs-name">mysql.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">druid.version</span>&gt;</span>1.0.9<span class="hljs-tag">&lt;/<span class="hljs-name">druid.version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">jedis.version</span>&gt;</span>2.7.2<span class="hljs-tag">&lt;/<span class="hljs-name">jedis.version</span>&gt;</span></span><br><span class="line">   <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span></span><br><span class="line">       <span class="hljs-comment">&lt;!-- Spring --&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-context<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-beans<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-jdbc<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-aspects<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-jms<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-context-support<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-tx<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">	<span class="hljs-comment">&lt;!-- log4j --&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.17<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-comment">&lt;!-- Mybatis --&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;mybatis.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-spring<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;mybatis.spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.pagehelper<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>pagehelper<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;pagehelper.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">       <span class="hljs-comment">&lt;!--MyBatisPlus--&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="hljs-comment">&lt;!-- MySql --&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;mysql.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">       <span class="hljs-comment">&lt;!-- 连接池 --&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>druid<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;druid.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">       <span class="hljs-comment">&lt;!--lombok--&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.18.8<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>provided<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span></span><br><span class="line">       <span class="hljs-comment">&lt;!-- 加载配置文件 --&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;<span class="hljs-name">resource</span>&gt;</span></span><br><span class="line">               <span class="hljs-tag">&lt;<span class="hljs-name">directory</span>&gt;</span>src/main/java<span class="hljs-tag">&lt;/<span class="hljs-name">directory</span>&gt;</span></span><br><span class="line">               <span class="hljs-tag">&lt;<span class="hljs-name">includes</span>&gt;</span></span><br><span class="line">                   <span class="hljs-tag">&lt;<span class="hljs-name">include</span>&gt;</span>**/*.xml<span class="hljs-tag">&lt;/<span class="hljs-name">include</span>&gt;</span></span><br><span class="line">               <span class="hljs-tag">&lt;/<span class="hljs-name">includes</span>&gt;</span></span><br><span class="line">           <span class="hljs-tag">&lt;/<span class="hljs-name">resource</span>&gt;</span></span><br><span class="line">       <span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span></span><br><span class="line">   <span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意最后<code>&lt;resource&gt;</code>标签的配置是非常必要的，在默认构建模式下，放在mapper包中的配置文件并不会编译到目标目录中去，就会导致MyBatis搭建错误，详见：<a href="./54018.html">MyBatis抛出BindingException异常可能是你忘了配置资源拷贝</a></p>
+<h2 id="第二步：编写实体类与Mapper接口"><a href="#第二步：编写实体类与Mapper接口" class="headerlink" title="第二步：编写实体类与Mapper接口"></a>第二步：编写实体类与Mapper接口</h2><img src="/article/41666/31.png">
+
+<h2 id="第三步：配置Mapper配置文件"><a href="#第三步：配置Mapper配置文件" class="headerlink" title="第三步：配置Mapper配置文件"></a>第三步：配置Mapper配置文件</h2><p>Mapper配置文件需要满足一下要求：</p>
+<ol>
+<li>Mapper配置文件与Mapper接口在一个包中</li>
+<li>Mapper配置文件名与Mapper接口名相同</li>
+<li>Mapper配置文件中namespace填写为Mapper接口的全限定类名</li>
+<li>Mapper配置文件配置sql语句的标签的id要与Mapper接口中方法名相同</li>
+</ol>
+<img src="/article/41666/32.png">
+
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">mapper</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">"-//mybatis.org//DTD Mapper 3.0//EN"</span> <span class="hljs-meta-string">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"</span> &gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">"com.tjd.spring_mybatis_plus.mapper.UserMapper"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"getUserById"</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">"com.tjd.spring_mybatis_plus.pojo.User"</span> <span class="hljs-attr">parameterType</span>=<span class="hljs-string">"long"</span>&gt;</span></span><br><span class="line">        select * from user where uid = #&#123;id&#125;</span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第四步：配置MyBatis核心配置文件"><a href="#第四步：配置MyBatis核心配置文件" class="headerlink" title="第四步：配置MyBatis核心配置文件"></a>第四步：配置MyBatis核心配置文件</h2><p>在<code>resource/</code>目录下创建SqlMapConfig.xml文件，SqlMapConfig.xml配置文件具体内容参考：<a href="http://www.mybatis.org/mybatis-3/zh/configuration.html" target="_blank" rel="noopener">MyBatis官网</a></p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">configuration</span></span></span><br><span class="line"><span class="hljs-meta">		<span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="hljs-meta">		<span class="hljs-meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span></span><br><span class="line">    <span class="hljs-comment">&lt;!--开启日志输出--&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">settings</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">setting</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"logImpl"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"STDOUT_LOGGING"</span> /&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">settings</span>&gt;</span></span><br><span class="line">    <span class="hljs-comment">&lt;!--配置类别名，配置后在Mapper配置文件（通常我们将编写SQL语句的配置文件成为Mapper配置文件）中需要使用pojo包中的类时，使用简单类名即可--&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">typeAliases</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"com.tjd.spring_mybatis_plus.pojo"</span>/&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">typeAliases</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第五步：配置Spring核心配置文件"><a href="#第五步：配置Spring核心配置文件" class="headerlink" title="第五步：配置Spring核心配置文件"></a>第五步：配置Spring核心配置文件</h2><p>在<code>resource/</code>目录下创建applicationContext.xml文件</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">beans</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="hljs-tag">	<span class="hljs-attr">xmlns:context</span>=<span class="hljs-string">"http://www.springframework.org/schema/context"</span> <span class="hljs-attr">xmlns:p</span>=<span class="hljs-string">"http://www.springframework.org/schema/p"</span></span></span><br><span class="line"><span class="hljs-tag">	<span class="hljs-attr">xmlns:aop</span>=<span class="hljs-string">"http://www.springframework.org/schema/aop"</span> <span class="hljs-attr">xmlns:tx</span>=<span class="hljs-string">"http://www.springframework.org/schema/tx"</span></span></span><br><span class="line"><span class="hljs-tag">	<span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="hljs-tag">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd</span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-string">	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd</span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-string">	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd</span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-string">	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">&lt;!--配置包扫描器，配置后会自动扫描指定包下面，由注解注册的Bean--&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">context:component-scan</span> <span class="hljs-attr">base-package</span>=<span class="hljs-string">"com.tjd.spring_mybatis_plus"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">context:component-scan</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="hljs-comment">&lt;!-- 数据库连接池 --&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"dataSource"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"com.alibaba.druid.pool.DruidDataSource"</span></span></span><br><span class="line"><span class="hljs-tag">		  <span class="hljs-attr">destroy-method</span>=<span class="hljs-string">"close"</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"url"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"jdbc:mysql://localhost:3306/test"</span> /&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"username"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"root"</span> /&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"xxx"</span> /&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"driverClassName"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"com.mysql.jdbc.Driver"</span> /&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></span><br><span class="line">	<span class="hljs-comment">&lt;!-- 让spring管理sqlsessionfactory 使用mybatis和spring整合包中的 --&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"sqlSessionFactory"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">		<span class="hljs-comment">&lt;!-- 数据库连接池 --&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"dataSource"</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"dataSource"</span> /&gt;</span></span><br><span class="line">		<span class="hljs-comment">&lt;!-- 加载mybatis的全局配置文件 --&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"configLocation"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"classpath:SqlMapConfig.xml"</span> /&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="hljs-comment">&lt;!--BeanDefinitionRegistryPostProcessor，它从一个基本包开始递归地搜索接口，并将它们注册为MapperFactoryBean。--&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"org.mybatis.spring.mapper.MapperScannerConfigurer"</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"basePackage"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"com.tjd.spring_mybatis_plus.mapper"</span> /&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，在applicationContext.xml中最后配置的<code>MapperScannerConfigurer</code>，它的作用是<strong>从指定的包开始递归地搜索接口，并将它们注册为<code>MapperFactoryBean</code>。注意，只有具有至少一个方法的接口才会被注册;具体类将被忽略</strong>。并且会根据Mapper接口找到对应的映射文件，这也就是为什么前面要求：</p>
+<ul>
+<li>Mapper配置文件与Mapper接口在一个包中</li>
+<li>Mapper配置文件名与Mapper接口名相同</li>
+</ul>
+<p><strong>因为只有这样才能让<code>MapperScannerConfigurer</code>在找到接口时，顺利的找到接口对应的配置文件</strong>。</p>
+<h3 id="什么是MapperFactoryBean"><a href="#什么是MapperFactoryBean" class="headerlink" title="什么是MapperFactoryBean"></a><strong>什么是MapperFactoryBean</strong></h3><p>那什么是<code>MapperFactoryBean</code>，它是我们Mapper接口的实质代理实现类，如果不在applicationContext.xml不配置<code>MapperScannerConfigurer</code>，那么我们就需要手动配置UserMapper接口的实现类，示例如下：</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"userMapper"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"org.mybatis.spring.mapper.MapperFactoryBean"</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"sqlSessionFactory"</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"sqlSessionFactory"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"mapperInterface"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"com.tjd.spring_mybatis_plus.mapper.UserMapper"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是如果采用这种配置方式，那么每个接口都需要配置一次，会很麻烦，如果我们配置<code>MapperScannerConfigurer</code>那么只需要指定包名，就能将该包下所有接口注册为MapperFactoryBean。</p>
+<h3 id="如何使接口与映射配置文件分离"><a href="#如何使接口与映射配置文件分离" class="headerlink" title="如何使接口与映射配置文件分离"></a><strong>如何使接口与映射配置文件分离</strong></h3><p>由于我们在spring配置文件中配置了<code>MapperScannerConfigurer</code>，实质上我们并不需要在MyBatis核心配置文件中指定映射文件的路径，因为他找到接口后自然就能找到配置文件；但是如果想要使得Mapper配置文件与接口分开，我们就需要进行额外的配置：</p>
+<h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><p>在Spring配置文件配置SqlSessionFactoryBean时通过mapperLocations属性指定映射文件路径</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">&lt;!-- 让spring管理sqlsessionfactory 使用mybatis和spring整合包中的 --&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"sqlSessionFactory"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">	<span class="hljs-comment">&lt;!-- 数据库连接池 --&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"dataSource"</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"dataSource"</span> /&gt;</span></span><br><span class="line">	<span class="hljs-comment">&lt;!-- 加载mybatis的全局配置文件 --&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"configLocation"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"classpath:SqlMapConfig.xml"</span> /&gt;</span></span><br><span class="line">	<span class="hljs-comment">&lt;!--指定--&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"mapperLocations"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"com/tjd/spring_mybatis_plus/pojo/*.xml"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><p>那么可以在MyBatis核心配置文件中采用<code>&lt;mapper resource&gt;</code>或<code>&lt;mapper url&gt;</code>载入配置文件。</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">mappers</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">"com/tjd/spring_mybatis_plus/pojo/UserMapper.xml"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">mappers</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置文件与接口分离后，配置文件名也就没有与接口名相同的需求了。</p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/MyBatis/">MyBatis</a>, <a class="has-link-grey -link" href="/tags/Spring/">Spring</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5d1b4ddd55a8b200110cdf62&amp;product=social-ab" async="async"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechat.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/article/54018.html">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">MyBatis抛出BindingException异常可能是你忘了配置资源拷贝</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/article/30374.html">
+                <span class="level-item">MyBatis动态代理开发的理解</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'a362d7e659d5da0b4c24',
+        clientSecret: 'bfd2817b484ba4d45ad14e44bbf993fa353a4f2d',
+        id: '8a4c308dd1210ce2e14b4b2ed1ea3ea3',
+        repo: 'blog_comment',
+        owner: 'tianjindong',
+        admin: "tianjindong"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-128x128 has-mb-6" src="/images/avatar.png" alt="听到微笑">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        听到微笑
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Web Developer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国 上海</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        53
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        19
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        28
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/tianjindong" target="_blank">
+                关注我</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/tianjindong">
+                
+                <i class="iconfont-github icon-GitHub"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Gitee" href="https://gitee.com/tianjindong">
+                
+                <i class="iconfont-gitee icon-gitee"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/tianjindong0804">
+                
+                <i class="iconfont-csdn icon-CN_csdnnet"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="https://twitter.com/HearingSmile">
+                
+                <i class="iconfont-twitter icon-twitter"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#第一步：引入jar包">
+        <span class="has-mr-6">1</span>
+        <span>第一步：引入jar包</span>
+        </a></li><li>
+        <a class="is-flex" href="#第二步：编写实体类与Mapper接口">
+        <span class="has-mr-6">2</span>
+        <span>第二步：编写实体类与Mapper接口</span>
+        </a></li><li>
+        <a class="is-flex" href="#第三步：配置Mapper配置文件">
+        <span class="has-mr-6">3</span>
+        <span>第三步：配置Mapper配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#第四步：配置MyBatis核心配置文件">
+        <span class="has-mr-6">4</span>
+        <span>第四步：配置MyBatis核心配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#第五步：配置Spring核心配置文件">
+        <span class="has-mr-6">5</span>
+        <span>第五步：配置Spring核心配置文件</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#什么是MapperFactoryBean">
+        <span class="has-mr-6">5.1</span>
+        <span>什么是MapperFactoryBean</span>
+        </a></li><li>
+        <a class="is-flex" href="#如何使接口与映射配置文件分离">
+        <span class="has-mr-6">5.2</span>
+        <span>如何使接口与映射配置文件分离</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#方式一">
+        <span class="has-mr-6">5.2.1</span>
+        <span>方式一</span>
+        </a></li><li>
+        <a class="is-flex" href="#方式二">
+        <span class="has-mr-6">5.2.2</span>
+        <span>方式二</span>
+        </a></li></ul></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+    
+    
+        <div class="column-right-shadow  is-sticky">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/article/54308.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h4.jpg" alt="B树和B+树与磁盘读写之间的联系">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-24T02:20:31.000Z">2019-08-24</time></div>
+                    <a href="/article/54308.html" class="has-link-black-ter is-size-6">B树和B+树与磁盘读写之间的联系</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/21035.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h3.jpg" alt="什么是B+树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:25:05.000Z">2019-08-19</time></div>
+                    <a href="/article/21035.html" class="has-link-black-ter is-size-6">什么是B+树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/8567.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:24:50.000Z">2019-08-19</time></div>
+                    <a href="/article/8567.html" class="has-link-black-ter is-size-6">什么是B-树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/62369.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h1.jpg" alt="什么是一致性Hash算法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-16T07:27:10.000Z">2019-08-16</time></div>
+                    <a href="/article/62369.html" class="has-link-black-ter is-size-6">什么是一致性Hash算法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/59694.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/c3.jpg" alt="深入解析LinkedHashMap">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-15T11:17:33.000Z">2019-08-15</time></div>
+                    <a href="/article/59694.html" class="has-link-black-ter is-size-6">深入解析LinkedHashMap</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java基础/">Java基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="MyBatis与Spring整合步骤" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 听到微笑&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

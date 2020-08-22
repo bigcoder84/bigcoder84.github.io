@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>一文看懂Spring事务的七种传播行为（转） - 听到微笑的博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="什么叫事务传播行为？听起来挺高端的，其实很简单。 即然是传播，那么至少有两个东西，才可以发生传播。单体不存在传播这个行为。">
+<meta name="keywords" content="事务,Spring事务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文看懂Spring事务的七种传播行为（转）">
+<meta property="og:url" content="http://www.tianjindong.cn/article/51207.html">
+<meta property="og:site_name" content="听到微笑的博客">
+<meta property="og:description" content="什么叫事务传播行为？听起来挺高端的，其实很简单。 即然是传播，那么至少有两个东西，才可以发生传播。单体不存在传播这个行为。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.tianjindong.cn/gallery/thumbnails/fa1.jpg">
+<meta property="og:updated_time" content="2020-08-22T06:32:33.683Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一文看懂Spring事务的七种传播行为（转）">
+<meta name="twitter:description" content="什么叫事务传播行为？听起来挺高端的，其实很简单。 即然是传播，那么至少有两个东西，才可以发生传播。单体不存在传播这个行为。">
+<meta name="twitter:image" content="http://www.tianjindong.cn/gallery/thumbnails/fa1.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.ico">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?81f9c1489f84c7a99b0bd377c9fb5de8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/iconfont.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="一文看懂Spring事务的七种传播行为（转）" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/categories">分类</a>
+                
+                <a class="navbar-item" href="/tags">标签</a>
+                
+                <a class="navbar-item" href="/archives">历史</a>
+                
+                <a class="navbar-item" href="/music.html">音乐</a>
+                
+                <a class="navbar-item" href="/about.html">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+        
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/thumbnails/fa1.jpg" alt="一文看懂Spring事务的七种传播行为（转）">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-08-06T00:20:52.000Z">2019-08-06</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/常用框架/">常用框架</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/常用框架/Spring/">Spring</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    13 分钟 读完 (大约 2000 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                一文看懂Spring事务的七种传播行为（转）
+            
+        </h1>
+        <div class="content">
+            <p>什么叫事务传播行为？听起来挺高端的，其实很简单。 即然是传播，那么至少有两个东西，才可以发生传播。单体不存在传播这个行为。<a id="more"></a></p>
+<p>事务传播行为（propagation behavior）指的就是当一个事务方法被另一个事务方法调用时，这个事务方法应该如何进行。 </p>
+<p>例如：methodA事务方法调用methodB事务方法时，methodB是继续在调用者methodA的事务中运行呢，还是为自己开启一个新事务运行，这就是由methodB的事务传播行为决定的。</p>
+<h2 id="Spring定义了七种传播行为"><a href="#Spring定义了七种传播行为" class="headerlink" title="Spring定义了七种传播行为"></a><strong>Spring定义了七种传播行为</strong></h2><img src="/article/51207/47.png">
+
+<h2 id="PROPAGATION-REQUIRED"><a href="#PROPAGATION-REQUIRED" class="headerlink" title="PROPAGATION_REQUIRED"></a><strong>PROPAGATION_REQUIRED</strong></h2><p>如果存在一个事务，则支持当前事务。如果没有事务则开启一个新的事务。 </p>
+<p>可以把事务想像成一个胶囊，在这个场景下方法B用的是方法A产生的胶囊（事务）。 </p>
+<img src="/article/51207/48.png">
+
+<p>举例有两个方法：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodA</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">	methodB();</span><br><span class="line">    <span class="hljs-comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodB</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>单独调用methodB方法时，因为当前上下文不存在事务，所以会开启一个新的事务。 </p>
+<p>调用methodA方法时，因为当前上下文不存在事务，所以会开启一个新的事务。当执行到methodB时，methodB发现当前上下文有事务，因此就加入到当前事务中来。</p>
+<h2 id="PROPAGATION-SUPPORTS"><a href="#PROPAGATION-SUPPORTS" class="headerlink" title="PROPAGATION_SUPPORTS"></a><strong>PROPAGATION_SUPPORTS</strong></h2><p>​    如果存在一个事务，支持当前事务。如果没有事务，则非事务的执行。但是对于事务同步的事务管理器，PROPAGATION_SUPPORTS与不使用事务有少许不同。 </p>
+<p>举例有两个方法：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodA</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">	methodB();</span><br><span class="line">    <span class="hljs-comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 事务属性为SUPPORTS</span></span><br><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.SUPPORTS)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodB</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>单纯的调用methodB时，methodB方法是非事务的执行的。当调用methdA时,methodB则加入了methodA的事务中,事务地执行。</p>
+<h2 id="PROPAGATION-MANDATORY"><a href="#PROPAGATION-MANDATORY" class="headerlink" title="PROPAGATION_MANDATORY"></a><strong>PROPAGATION_MANDATORY</strong></h2><p>如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodA</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">	methodB();</span><br><span class="line">    <span class="hljs-comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 事务属性为MANDATORY</span></span><br><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.MANDATORY)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodB</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当单独调用methodB时，因为当前没有一个活动的事务，则会抛出异常<code>throw new IllegalTransactionStateException(“Transaction propagation ‘mandatory’ but no existing transaction found”);</code>当调用methodA时，methodB则加入到methodA的事务中，事务地执行。</p>
+<h2 id="PROPAGATION-REQUIRES-NEW"><a href="#PROPAGATION-REQUIRES-NEW" class="headerlink" title="PROPAGATION_REQUIRES_NEW"></a><strong>PROPAGATION_REQUIRES_NEW</strong></h2><img src="/article/51207/49.png">
+
+<p>使用PROPAGATION_REQUIRES_NEW,需要使用 JtaTransactionManager作为事务管理器。 </p>
+<p>它会开启一个新的事务。如果一个事务已经存在，则先将这个存在的事务挂起。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodA</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">	doSomeThingA();</span><br><span class="line">	methodB();</span><br><span class="line">	doSomeThingB();</span><br><span class="line">	<span class="hljs-comment">// do something else</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 事务属性为REQUIRES_NEW</span></span><br><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodB</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当调用</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span></span>&#123;  </span><br><span class="line">	methodA();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于调用：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span></span>&#123;</span><br><span class="line">    TransactionManager tm = <span class="hljs-keyword">null</span>;</span><br><span class="line">    <span class="hljs-keyword">try</span>&#123;</span><br><span class="line">        <span class="hljs-comment">//获得一个JTA事务管理器</span></span><br><span class="line">        tm = getTransactionManager();</span><br><span class="line">        tm.begin();<span class="hljs-comment">//开启一个新的事务</span></span><br><span class="line">        Transaction ts1 = tm.getTransaction();</span><br><span class="line">        doSomeThing();</span><br><span class="line">        tm.suspend();<span class="hljs-comment">//挂起当前事务</span></span><br><span class="line">        <span class="hljs-keyword">try</span>&#123;</span><br><span class="line">            tm.begin();<span class="hljs-comment">//重新开启第二个事务</span></span><br><span class="line">            Transaction ts2 = tm.getTransaction();</span><br><span class="line">            methodB();</span><br><span class="line">            ts2.commit();<span class="hljs-comment">//提交第二个事务</span></span><br><span class="line">        &#125; Catch(RunTimeException ex) &#123;</span><br><span class="line">            ts2.rollback();<span class="hljs-comment">//回滚第二个事务</span></span><br><span class="line">        &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="line">            <span class="hljs-comment">//释放资源</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="hljs-comment">//methodB执行完后，恢复第一个事务</span></span><br><span class="line">        tm.resume(ts1);</span><br><span class="line">        doSomeThingB();</span><br><span class="line">        ts1.commit();<span class="hljs-comment">//提交第一个事务</span></span><br><span class="line">    &#125; <span class="hljs-keyword">catch</span>(RunTimeException ex) &#123;</span><br><span class="line">        ts1.rollback();<span class="hljs-comment">//回滚第一个事务</span></span><br><span class="line">    &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="line">        <span class="hljs-comment">//释放资源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    在这里，我把ts1称为外层事务，ts2称为内层事务。从上面的代码可以看出，<code>ts2与ts1是两个独立的事务，互不相干。Ts2是否成功并不依赖于 ts1</code>。如果methodA方法在调用methodB方法后的doSomeThingB方法失败了，而methodB方法所做的结果依然被提交。而除了 methodB之外的其它代码导致的结果却被回滚了。</p>
+<h2 id="PROPAGATION-NOT-SUPPORTED"><a href="#PROPAGATION-NOT-SUPPORTED" class="headerlink" title="PROPAGATION_NOT_SUPPORTED"></a><strong>PROPAGATION_NOT_SUPPORTED</strong></h2><p>PROPAGATION_NOT_SUPPORTED 总是非事务地执行，并挂起任何存在的事务。使用PROPAGATION_NOT_SUPPORTED,也需要使用JtaTransactionManager作为事务管理器。 </p>
+<img src="/article/51207/50.png">
+
+<h2 id="PROPAGATION-NEVER"><a href="#PROPAGATION-NEVER" class="headerlink" title="PROPAGATION_NEVER"></a><strong>PROPAGATION_NEVER</strong></h2><p>总是非事务地执行，如果存在一个活动事务，则抛出异常。</p>
+<h2 id="PROPAGATION-NESTED"><a href="#PROPAGATION-NESTED" class="headerlink" title="PROPAGATION_NESTED"></a><strong>PROPAGATION_NESTED</strong></h2><img src="/article/51207/51.png">
+
+<p>如果一个活动的事务存在，则运行在一个嵌套的事务中。 如果没有活动事务, 则按TransactionDefinition.PROPAGATION_REQUIRED 属性执行。 </p>
+<p>这是一个嵌套事务,使用JDBC 3.0驱动时,仅仅支持DataSourceTransactionManager作为事务管理器。 </p>
+<p>需要JDBC 驱动的java.sql.Savepoint类。使用PROPAGATION_NESTED，还需要把PlatformTransactionManager的nestedTransactionAllowed属性设为true(属性值默认为false)。</p>
+<p>这里关键是嵌套执行。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodA</span><span class="hljs-params">()</span></span>&#123;</span><br><span class="line">	doSomeThingA();</span><br><span class="line">	methodB();</span><br><span class="line">	doSomeThingB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Transactional</span>(propagation = Propagation.NEWSTED)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">methodB</span><span class="hljs-params">()</span></span>&#123;</span><br><span class="line">	……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果单独调用methodB方法，则按REQUIRED属性执行。如果调用methodA方法，相当于下面的效果：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span></span>&#123;</span><br><span class="line">    Connection con = <span class="hljs-keyword">null</span>;</span><br><span class="line">    Savepoint savepoint = <span class="hljs-keyword">null</span>;</span><br><span class="line">    <span class="hljs-keyword">try</span>&#123;</span><br><span class="line">        con = getConnection();</span><br><span class="line">        con.setAutoCommit(<span class="hljs-keyword">false</span>);</span><br><span class="line">        doSomeThingA();</span><br><span class="line">        savepoint = con.setSavepoint();</span><br><span class="line">        <span class="hljs-keyword">try</span>&#123;</span><br><span class="line">            methodB();</span><br><span class="line">        &#125; <span class="hljs-keyword">catch</span>(RuntimeException ex) &#123;</span><br><span class="line">            con.rollback(savepoint);</span><br><span class="line">        &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="line">            <span class="hljs-comment">//释放资源</span></span><br><span class="line">        &#125;</span><br><span class="line">        doSomeThingB();</span><br><span class="line">        con.commit();</span><br><span class="line">    &#125; <span class="hljs-keyword">catch</span>(RuntimeException ex) &#123;</span><br><span class="line">        con.rollback();</span><br><span class="line">    &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="line">        <span class="hljs-comment">//释放资源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当methodB方法调用之前，调用setSavepoint方法，保存当前的状态到savepoint。如果methodB方法调用失败，则恢复到之前保存的状态。但是需要注意的是，这时的事务并没有进行提交，如果后续的代码(doSomeThingB()方法)调用失败，则回滚包括methodB方法的所有操作。嵌套事务一个非常重要的概念就是内层事务依赖于外层事务。外层事务失败时，会回滚内层事务所做的动作。而内层事务操作失败并不会引起外层事务的回滚。</p>
+<h2 id="PROPAGATION-NESTED-与PROPAGATION-REQUIRES-NEW的区别"><a href="#PROPAGATION-NESTED-与PROPAGATION-REQUIRES-NEW的区别" class="headerlink" title="PROPAGATION_NESTED 与PROPAGATION_REQUIRES_NEW的区别"></a><strong>PROPAGATION_NESTED 与PROPAGATION_REQUIRES_NEW的区别</strong></h2><p>它们非常类似,都像一个嵌套事务，如果不存在一个活动的事务，都会开启一个新的事务。<br>使用 PROPAGATION_REQUIRES_NEW时，内层事务与外层事务就像两个独立的事务一样，一旦内层事务进行了提交后，外层事务不能对其进行回滚。两个事务互不影响。两个事务不是一个真正的嵌套事务。同时它需要JTA事务管理器的支持。</p>
+<p>使用PROPAGATION_NESTED时，外层事务的回滚可以引起内层事务的回滚。而内层事务的异常并不会导致外层事务的回滚，它是一个真正的嵌套事务。DataSourceTransactionManager使用savepoint支持PROPAGATION_NESTED时，需要JDBC 3.0以上驱动及1.4以上的JDK版本支持。其它的JTATrasactionManager实现可能有不同的支持方式。</p>
+<p>PROPAGATION_REQUIRES_NEW 启动一个新的, 不依赖于环境的 “内部” 事务. 这个事务将被完全 commited 或 rolled back 而不依赖于外部事务, 它拥有自己的隔离范围, 自己的锁, 等等. 当内部事务开始执行时, 外部事务将被挂起, 内务事务结束时, 外部事务将继续执行。</p>
+<p>另一方面, PROPAGATION_NESTED 开始一个 “嵌套的” 事务, 它是已经存在事务的一个真正的子事务. 潜套事务开始执行时, 它将取得一个 savepoint. 如果这个嵌套事务失败, 我们将回滚到此 savepoint. 潜套事务是外部事务的一部分, 只有外部事务结束后它才会被提交。</p>
+<p>由此可见, PROPAGATION_REQUIRES_NEW 和 PROPAGATION_NESTED 的最大区别在于, PROPAGATION_REQUIRES_NEW 完全是一个新的事务, 而 PROPAGATION_NESTED 则是外部事务的子事务, 如果外部事务 commit, 嵌套事务也会被 commit, 这个规则同样适用于 roll back。</p>
+<p><strong>本文转载至</strong>：<a href="https://blog.csdn.net/soonfly/article/details/70305683" target="_blank" rel="noopener">https://blog.csdn.net/soonfly/article/details/70305683</a></p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Spring事务/">Spring事务</a>, <a class="has-link-grey -link" href="/tags/事务/">事务</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+<div class="sharethis-inline-share-buttons"></div>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5d1b4ddd55a8b200110cdf62&amp;product=social-ab" async="async"></script>
+
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechat.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/article/37211.html">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">事务的隔离级别（转）</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/article/22321.html">
+                <span class="level-item">Maven到底是什么</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'a362d7e659d5da0b4c24',
+        clientSecret: 'bfd2817b484ba4d45ad14e44bbf993fa353a4f2d',
+        id: '99ea9188f03f35de7f1384efc8523ac5',
+        repo: 'blog_comment',
+        owner: 'tianjindong',
+        admin: "tianjindong"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-128x128 has-mb-6" src="/images/avatar.png" alt="听到微笑">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        听到微笑
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Web Developer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国 上海</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        53
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        19
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        28
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/tianjindong" target="_blank">
+                关注我</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/tianjindong">
+                
+                <i class="iconfont-github icon-GitHub"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Gitee" href="https://gitee.com/tianjindong">
+                
+                <i class="iconfont-gitee icon-gitee"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/tianjindong0804">
+                
+                <i class="iconfont-csdn icon-CN_csdnnet"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="https://twitter.com/HearingSmile">
+                
+                <i class="iconfont-twitter icon-twitter"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#Spring定义了七种传播行为">
+        <span class="has-mr-6">1</span>
+        <span>Spring定义了七种传播行为</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-REQUIRED">
+        <span class="has-mr-6">2</span>
+        <span>PROPAGATION_REQUIRED</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-SUPPORTS">
+        <span class="has-mr-6">3</span>
+        <span>PROPAGATION_SUPPORTS</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-MANDATORY">
+        <span class="has-mr-6">4</span>
+        <span>PROPAGATION_MANDATORY</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-REQUIRES-NEW">
+        <span class="has-mr-6">5</span>
+        <span>PROPAGATION_REQUIRES_NEW</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-NOT-SUPPORTED">
+        <span class="has-mr-6">6</span>
+        <span>PROPAGATION_NOT_SUPPORTED</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-NEVER">
+        <span class="has-mr-6">7</span>
+        <span>PROPAGATION_NEVER</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-NESTED">
+        <span class="has-mr-6">8</span>
+        <span>PROPAGATION_NESTED</span>
+        </a></li><li>
+        <a class="is-flex" href="#PROPAGATION-NESTED-与PROPAGATION-REQUIRES-NEW的区别">
+        <span class="has-mr-6">9</span>
+        <span>PROPAGATION_NESTED 与PROPAGATION_REQUIRES_NEW的区别</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+    
+    
+        <div class="column-right-shadow  is-sticky">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/article/54308.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h4.jpg" alt="B树和B+树与磁盘读写之间的联系">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-24T02:20:31.000Z">2019-08-24</time></div>
+                    <a href="/article/54308.html" class="has-link-black-ter is-size-6">B树和B+树与磁盘读写之间的联系</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/21035.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h3.jpg" alt="什么是B+树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:25:05.000Z">2019-08-19</time></div>
+                    <a href="/article/21035.html" class="has-link-black-ter is-size-6">什么是B+树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/8567.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-19T10:24:50.000Z">2019-08-19</time></div>
+                    <a href="/article/8567.html" class="has-link-black-ter is-size-6">什么是B-树</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/62369.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/h1.jpg" alt="什么是一致性Hash算法">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-16T07:27:10.000Z">2019-08-16</time></div>
+                    <a href="/article/62369.html" class="has-link-black-ter is-size-6">什么是一致性Hash算法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/数据结构/">数据结构</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/article/59694.html" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/thumbnails/c3.jpg" alt="深入解析LinkedHashMap">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-15T11:17:33.000Z">2019-08-15</time></div>
+                    <a href="/article/59694.html" class="has-link-black-ter is-size-6">深入解析LinkedHashMap</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java基础/">Java基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="一文看懂Spring事务的七种传播行为（转）" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 听到微笑&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

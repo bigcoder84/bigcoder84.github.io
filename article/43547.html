@@ -16,7 +16,7 @@
 <meta property="og:description" content="在日常的编码中，我们获取大多数情况下都是通过new关键字来创建对象的，但是Object中提供了clone()方法，让我们复制一个已有对象的副本进行使用。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://tianjindong.gitee.io/gallery/thumbnails/c1.jpg">
-<meta property="og:updated_time" content="2020-08-22T06:52:04.344Z">
+<meta property="og:updated_time" content="2020-08-22T06:55:55.987Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Object类中的clone方法">
 <meta name="twitter:description" content="在日常的编码中，我们获取大多数情况下都是通过new关键字来创建对象的，但是Object中提供了clone()方法，让我们复制一个已有对象的副本进行使用。">
@@ -185,7 +185,7 @@ var _hmt = _hmt || [];
             <p>在日常的编码中，我们获取大多数情况下都是通过new关键字来创建对象的，但是Object中提供了clone()方法，让我们复制一个已有对象的副本进行使用。</p>
 <a id="more"></a>
 
-<h2 id="clone-方法的作用111111"><a href="#clone-方法的作用111111" class="headerlink" title="clone()方法的作用111111"></a><strong>clone()方法的作用</strong>111111</h2><ul>
+<h2 id="clone-方法的作用"><a href="#clone-方法的作用" class="headerlink" title="clone()方法的作用"></a><strong>clone()方法的作用</strong></h2><ul>
 <li><p>克隆方法用于创建对象的拷贝，<strong>为了使用clone方法，类必须实现java.lang.Cloneable接口</strong>，如果没有实现Clonebale接口，调用父类的clone()方法时会抛出CloneNotSupportedException，Cloneable接口只是一个标识，和<code>Serializable</code>接口类似，接口中没有任何方法。</p>
 <p><strong>源码类似于下面这样：</strong></p>
 <figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> Object <span class="hljs-title">clone</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">       <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> Cloneable)) &#123;</span><br><span class="line">           <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> CloneNotSupportedException(<span class="hljs-string">"Class doesn't implement Cloneable"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="hljs-keyword">return</span> internalClone((Cloneable) <span class="hljs-keyword">this</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
@@ -417,9 +417,9 @@ var _hmt = _hmt || [];
                 目录
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#clone-方法的作用111111">
+        <a class="is-flex" href="#clone-方法的作用">
         <span class="has-mr-6">1</span>
-        <span>clone()方法的作用111111</span>
+        <span>clone()方法的作用</span>
         </a></li><li>
         <a class="is-flex" href="#浅拷贝">
         <span class="has-mr-6">2</span>

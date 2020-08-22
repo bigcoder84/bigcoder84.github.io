@@ -13,7 +13,7 @@ timezone:
 
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 #url: https://tianjindong.github.io
-url: https://tianjindong.gitee.io
+url: http://www.tianjindong.cn
 root: /
 #permalink: :year/:month/:day/:title/
 permalink: article/:abbrlink.html
@@ -81,8 +81,8 @@ theme: icarus
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
 - type: git
-  repo: https://gitee.com/tianjindong/tianjindong.git
+  repo: git@gitee.com:tianjindong/tianjindong.git
   branch: master
 - type: git
-  repo: https://github.com/tianjindong/tianjindong.github.io.git
+  repo: git@github.com:tianjindong/tianjindong.github.io.git
   branch: master

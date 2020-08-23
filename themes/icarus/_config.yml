@@ -106,9 +106,9 @@ widgets:
         # Author name to be shown in the profile widget
         author: 听到微笑
         # Title of the author to be shown in the profile widget
-        author_title: Web Developer
+        author_title: Java Engineer
         # Author's current location to be shown in the profile widget
-        location: 湖北武汉
+        location: 中国 上海
         # Path or URL to the avatar to be shown in the profile widget
         avatar:
         # Email address for the Gravatar to be shown in the profile widget
@@ -122,13 +122,16 @@ widgets:
             Github:
                 icon: iconfont-github icon-GitHub
                 url: 'https://github.com/tianjindong'
+            Gitee:
+                icon: iconfont-gitee icon-gitee
+                url: 'https://gitee.com/tianjindong'
             CSDN:
                 icon: iconfont-csdn icon-CN_csdnnet
                 url: 'https://blog.csdn.net/tianjindong0804'
-            微博:
-                #icon: fab fa-dribbble
-                icon: iconfont-weibo icon-weibo
-                url: 'https://weibo.com/HearingSmile'
+            # 微博:
+            #     #icon: fab fa-dribbble
+            #     icon: iconfont-weibo icon-weibo
+            #     url: 'https://weibo.com/HearingSmile'
             Twitter:
                 icon: iconfont-twitter icon-twitter
                 url: 'https://twitter.com/HearingSmile'

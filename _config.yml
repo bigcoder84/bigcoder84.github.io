@@ -5,7 +5,7 @@
 # Site
 title: 听到微笑的博客
 subtitle: 
-description: 该网站是“听到微笑”的个人博客，主要涵盖内容为：Web前端、Java后端、Linux操作系统、行业新闻、科技数码等
+description: “听到微笑”的个人博客，主要涵盖内容为：Java后端、分布式、微服务、Linux、行业新闻、科技数码等
 keywords: 
 author: 听到微笑
 language: zh-CN
@@ -37,7 +37,7 @@ external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
 # post_asset_folder default value is false
-post_asset_folder: true
+post_asset_folder: false
 relative_link: false
 future: true
 highlight:

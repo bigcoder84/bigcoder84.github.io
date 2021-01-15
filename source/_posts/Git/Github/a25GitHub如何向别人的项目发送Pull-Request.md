@@ -29,15 +29,13 @@ Pull Request 是社会化编程的象征。GitHub 创造的这一功能，可说
 
  这里博主为大家提供一个现成的测试仓库 [https://github.com/HearingSmile/TestPullRequest](https://github.com/HearingSmile/TestPullRequest)大家可以按照文章所讲解的步骤，向这个仓库提交自己的Pull Request，练习Pull Request具体操作。
 
-
-
 ### **第二步：Fork该仓库**
 
-{% asset_img 1.png %}
+![](https://image.bigcoder.cn/4a75652f-9680-459d-84c1-2ac61d6a4dd6.png)
 
 点击图片中右上角的Fork按钮，将TestPullRequest仓库Fork到自己账户中：
 
-{% asset_img 2.png %}
+![](https://image.bigcoder.cn/b1fd1378-acc0-4074-8076-e574aebd6a12.png)
 
 
 
@@ -51,7 +49,7 @@ Pull Request 是社会化编程的象征。GitHub 创造的这一功能，可说
 git clone https://github.com/xxx/TestPullRequest.git  #URL获取，见下图
 ```
 
-{% asset_img 3.gif %}
+![](https://image.bigcoder.cn/20210115224935.gif)
 
 
 
@@ -94,7 +92,7 @@ $ git branch -avv
 
 ### **第五步：修改代码**
 
-{% asset_img 4.png %}
+![](https://image.bigcoder.cn/20210115225115.png)
 
 我添加14行中的代码
 
@@ -134,16 +132,16 @@ $ git push origin work   #work表示push到远端的work分支上去，如果远
 
 **切换到work分支：**
 
-{% asset_img 5.png %}
+![](https://image.bigcoder.cn/20210115225427.png)
 
 **点击`New pull request`按钮：**
 
-{% asset_img 6.png %}
+![](https://image.bigcoder.cn/20210115225222.png)
 
 **发送Pull Request：**
 
-{% asset_img 7.png %}
+![](https://image.bigcoder.cn/20210115225340.png)
 
 **提交成功：**
 
-{% asset_img 8.png %}
+![](https://image.bigcoder.cn/20210115225416.png)

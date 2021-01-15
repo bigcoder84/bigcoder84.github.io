@@ -184,7 +184,7 @@ var _hmt = _hmt || [];
         <div class="content">
             <p>​        HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型。随着JDK（Java Developmet Kit）版本的更新，JDK1.8对HashMap底层的实现进行了优化，例如引入红黑树的数据结构和扩容的优化等。<a id="more"></a></p>
 <p>​        Java为数据结构中的映射定义了一个接口java.util.Map，此接口主要有四个常用的实现类，分别是HashMap、Hashtable、LinkedHashMap和TreeMap，类继承关系如下图所示：</p>
-<img src="/article/2006/58.png">
+
 
 <p>下面针对各个实现类的特点做一些说明：</p>
 <p>(1) HashMap：它根据键的hashCode值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，但遍历顺序却是不确定的。 HashMap最多只允许一条记录的键为null，允许多条记录的值为null。HashMap非线程安全，即任一时刻可以有多个线程同时写HashMap，可能会导致数据的不一致。如果需要满足线程安全，可以用 Collections的synchronizedMap方法使HashMap具有线程安全的能力，或者使用ConcurrentHashMap。</p>
@@ -194,11 +194,11 @@ var _hmt = _hmt || [];
 <p><code>对于上述四种Map类型的类，要求映射中的key是不可变对象</code>。不可变对象是该对象在创建后它的哈希值不会被改变。如果对象的哈希值发生变化，Map对象很可能就定位不到映射的位置了。</p>
 <h2 id="HashMap的基本原理"><a href="#HashMap的基本原理" class="headerlink" title="HashMap的基本原理"></a><strong>HashMap的基本原理</strong></h2><p>​        如果小伙伴们对HashMap的基本原理还不熟悉，建议大家参考 <a href="https://mp.weixin.qq.com/s/HzRH9ZJYmidzW5jrMvEi4w" target="_blank" rel="noopener">漫画：什么是HashMap？</a>一文。这里对基本原理进行简单的梳理：</p>
 <p>​        HashMap是一个用于存储Key-Value键值对的集合，每一个键值对也叫做<strong>Entry</strong>。这些个键值对（Entry）分散存储在一个数组当中（这个数组被称为Hash桶数组），这个数组就是HashMap的基础。</p>
-<img src="/article/2006/55.png">
+
 
 <p>​        那么我们如何将对象按照key的值放入到数组中去呢？这里我们就需要借助Hash函数，Hash函数可以将任何一个对象转换为一个int类型的值，但是这还不能将元素插入到数组中，因为数组的容量有限，而int类型的值非常大，我们不可能将int类型的Hash值与数组的元素一一对应，那么解决这种问题最简单的方法就是取模（%），将<code>Hash值%数组容量</code>就会得到一个不大于数组容量的一个数值，就可以将元素插入到数组中。</p>
 <p>​        但是，因为HashMap中数组的长度是有限的，当插入的Entry越来越多时，再完美的Hash函数也难免会出现index冲突的情况（Hash冲突就是两个不同Entry计算出来的数组索引值相同）。那么解决Hash冲突最简单的方法采用拉链法，也就是将冲突的Entry以链表的形式存在。</p>
-<p>​    <img src="/article/2006/56.png"></p>
+<p>​    </p>
 <p>​        在JDK7之前，HashMap解决Hash冲突时都是采用拉链法解决的；而在JDK8开始，HashMap采用链表+红黑树相结合的方式解决的，具体实现原理在后序源码讲解中体现。</p>
 <p>​        当HashMap中的数组中保存的Entry太多后，Hash冲突的可能性不断增大，这样会大大降低HashMap的执行效率，所以HashMap引入了扩容机制。这里就需要了解加载因子（负载因子）的概念，当元素个数大&gt;数组容量*加载因子时就会触发扩容，扩容时HashMap中的数组增加至原来两倍，将原Map中的数组重新散列到新的数组中去，至此完成了扩容操作。</p>
 <h2 id="HashMap源码分析"><a href="#HashMap源码分析" class="headerlink" title="HashMap源码分析"></a><strong>HashMap源码分析</strong></h2><h3 id="HashMap中的常量值"><a href="#HashMap中的常量值" class="headerlink" title="HashMap中的常量值"></a><strong>HashMap中的常量值</strong></h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">    * 默认的数组容量为16</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">4</span>; <span class="hljs-comment">// aka 16</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">    *	数组的最大容量。在后面我们会将每一个数组元素看成一个桶，因为数组元素在后面可能连接的是一个链表或者是一颗树。</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> MAXIMUM_CAPACITY = <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">30</span>;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">    * 默认的加载因子（负载因子）为0.75</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">float</span> DEFAULT_LOAD_FACTOR = <span class="hljs-number">0.75f</span>;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">    * 当链表长度到达TREEIFY_THRESHOLD时将链表转换为红黑树，也就是说链表最长为7。</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> TREEIFY_THRESHOLD = <span class="hljs-number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">    * . 桶的链表还原阈值：即 红黑树转为链表的阈值，当在扩容（resize（））时（此时HashMap的数据存储位置会重新计算），在重新计算存储位置后，当原有的红黑树内数量 &lt; 6时，则将 红黑树转换成链表</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> UNTREEIFY_THRESHOLD = <span class="hljs-number">6</span>;</span><br></pre></td></tr></table></figure>
@@ -235,21 +235,21 @@ var _hmt = _hmt || [];
 
 <p>从66行开始代码进入了链表元素的迁移工作，<code>loHead</code>和<code>loTail</code>两个节点分别记录不需要移动的链表的头部和尾部，<code>hiHead</code>和<code>hiTail</code>分别记录需要移动的链表头部和尾部。</p>
 <p>假设在扩容的时候某个数组下有这样一个链表 :</p>
-<img src="/article/2006/59.png">
+
 
 <p>其中，假设天蓝色部分的不需要挪动，红色部分的需要挪动</p>
 <p>第一步 : 建立<code>loHead</code> <code>loTail</code> <code>hiHead</code> <code>hiTail</code>四个节点</p>
 <p>第二步 ：</p>
-<img src="/article/2006/60.png">
+
 
 <p>第三步 :</p>
-<img src="/article/2006/61.png">
+
 
 <p>…第N步：</p>
-<img src="/article/2006/62.png">
+
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p><strong>下图是美团技术团队的put函数的流程总结</strong> ：</p>
-<img src="/article/2006/57.png">
+
 
 <p><strong>参考文章</strong>：</p>
 <p><a href="https://mp.weixin.qq.com/s/HzRH9ZJYmidzW5jrMvEi4w" target="_blank" rel="noopener">漫画：什么是HashMap</a></p>
@@ -568,7 +568,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -645,7 +645,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

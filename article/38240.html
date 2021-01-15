@@ -178,45 +178,45 @@ var _hmt = _hmt || [];
         <div class="content">
             <h2 id="使用变基操作合并分支"><a href="#使用变基操作合并分支" class="headerlink" title="使用变基操作合并分支"></a><strong>使用变基操作合并分支</strong></h2><a id="more"></a>
 
-<img src="/article/38240/41.png">
+
 
 <p>​    在 Git 中整合来自不同分支的修改主要有两种方法：<code>merge</code> 以及 <code>rebase</code>。</p>
 <p>​    在使用<code>merge</code>命令时，我们合并分支的效果是这样的：</p>
-<img src="/article/38240/42.png">
+
 
 <p>​    其实，还有一种方法：你可以提取在 <code>C4</code> 中引入的补丁和修改，然后在 <code>C3</code> 的基础上应用一次。 在 Git 中，这种操作就叫做<strong>变基</strong>。 你可以使用 <code>rebase</code> 命令将提交到某一分支上的所有修改都移至另一分支上，就好像“重新播放”一样。</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git checkout experiment</span><br><span class="line"><span class="hljs-meta">$</span> git rebase master #将test分支变基到master分支</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: added staged command</span><br></pre></td></tr></table></figure>
 
-<img src="/article/38240/43.png">
+
 
 <p>​    此时，<code>C4&#39;</code> 指向的快照就和上面使用 <code>merge</code> 命令的例子中 <code>C5</code> 指向的快照一模一样了。 这两种整合方法的最终结果没有任何区别，但是变基使得提交历史更加整洁。 你在查看一个经过变基的分支的历史记录时会发现，尽管实际的开发工作是并行的，但它们看上去就像是串行的一样，提交历史是一条直线没有分叉。</p>
 <p>​    一般我们这样做的目的是为了确保在向远程分支推送时能保持提交历史的整洁——例如向某个其他人维护的项目贡献代码时。 在这种情况下，你首先在自己的分支里进行开发，当开发完成时你需要先将你的代码变基到 <code>origin/master</code> 上，然后再向主项目提交修改。 这样的话，该项目的维护者就不再需要进行整合工作，只需要快进合并便可。</p>
 <p>​    请注意，无论是通过变基，还是通过三方合并，整合的最终结果所指向的快照始终是一样的，只不过提交历史不同罢了。 变基是将一系列提交按照原有次序依次应用到另一分支上，而合并是把最终结果合在一起。</p>
 <h3 id="变基冲突解决"><a href="#变基冲突解决" class="headerlink" title="变基冲突解决"></a><strong>变基冲突解决</strong></h3><p>​    与merge操作一样，如果两个分支同时更改了某个文件同一个地方，在变基时就会产生冲突，变基操作就会自动暂停，然后系统等待我们解决冲突。</p>
-<img src="/article/38240/50.png">
+
 
 <p>​    与merge解决冲突的操作一样，我们需要重新编辑冲突文件，解决文件中的冲突，然后通过add命令将冲突文件重新放入暂存区，然后执行<code>git rebase --continue</code>即可。</p>
 <h3 id="若我们无法解决变基冲突，我们就需要取消此次变基操作"><a href="#若我们无法解决变基冲突，我们就需要取消此次变基操作" class="headerlink" title="若我们无法解决变基冲突，我们就需要取消此次变基操作"></a><strong>若我们无法解决变基冲突，我们就需要取消此次变基操作</strong></h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --abort</span><br></pre></td></tr></table></figure>
 
-<h2 id="合并连续多个commit的合并"><a href="#合并连续多个commit的合并" class="headerlink" title="合并连续多个commit的合并"></a><strong>合并连续多个commit的合并</strong></h2><img src="/article/38240/34.png">
+<h2 id="合并连续多个commit的合并"><a href="#合并连续多个commit的合并" class="headerlink" title="合并连续多个commit的合并"></a><strong>合并连续多个commit的合并</strong></h2>
 
 <p>​    我们需要将上面两个提交对象合并到<code>d5c36d</code>这个commit对象中，所以<code>d5c36d</code>的父节点为基准进行变基操作：</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i 9b444c  #-i选项表示以交互模式进行</span><br></pre></td></tr></table></figure>
 
 <p>执行上述命令后，弹出命令交互框：我们需要在命令框中输入不同的命令从而达到不同的变基操作，但是第一个命令一定是像<code>pick</code>和<code>reword</code>这类有 <code>use commit</code>作用的命令:</p>
-<img src="/article/38240/35.png">
+
 
 <p>​    由于我们需要将<code>6bdb12e</code>和<code>b0f82fc</code>合并到<code>d5c36d0</code>，所以我们后面两个命令要选用 <code>squash</code>命令（可以用简写 s），该命令用于压缩commit对象：</p>
-<img src="/article/38240/36.png">
+
 
 <p>​    我们使用<code>wq</code>命令保存这个对话框后系统会自动执行这些命令，从而达到变基操作，执行完毕后系统会自动跳到另一个对话框，在这个对话框中我们可以修改合并后的commit的提交信息，通过<code>wq</code>保存后就完成了变基操作。</p>
-<img src="/article/38240/37.png">
+
 
 <p>我们通过<code>log</code>命令查看合并后的效果：</p>
 <p><img src="F:/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/Git/images/38.png" alt></p>
 <h2 id="更改历史某个commit对象的提交信息"><a href="#更改历史某个commit对象的提交信息" class="headerlink" title="更改历史某个commit对象的提交信息"></a><strong>更改历史某个commit对象的提交信息</strong></h2><p>​    在<a href="_16撤销操作.md">撤销操作</a>一文中我们提到了修改上一次的提交信息的操作，但是如果我们需要更改历史版本的提交信息，那么就不能使用<code>commit --amend</code>命令来实现这个功能了，我们就需要变基来实现这个功能了：</p>
 <p>​    比如我们想要更改下图中<code>b8b5af</code>这个commit对象的提交信息：</p>
-<img src="/article/38240/38.png">
+
 
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i 9b444c</span><br></pre></td></tr></table></figure>
 
@@ -225,7 +225,7 @@ var _hmt = _hmt || [];
 
 <p>​    <strong>根据 reword的命令的提示信息可知，该命令会在变基操作时继续使用该对象，只改变该对象的提示信息。</strong></p>
 <p>​    我们需要将<code>pick b8b5af2</code>改为<code>reword b8b5af2</code>:</p>
-<img src="/article/38240/40.png">
+
 
 <p>​    保存后，系统执行这些命令，然后自动进入提交信息修改的框，我们修改完成后保存即可。</p>
 
@@ -519,7 +519,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -596,7 +596,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

@@ -184,16 +184,16 @@ var _hmt = _hmt || [];
         <div class="content">
             <p>​    在<a href="https://www.bigcoder.cn/article/3483.html" target="_blank" rel="noopener">Git对象</a>中我们了解到，Git仓库相当于一个Key—Value数据库，我们可以通过<code>hash-object</code>命令向“数据库”中存入文件，然后通过存入文件时返回的SHA-1码取出文件。但是在这个数据库中有一个致命的问题，那就是并没保存原先的文件名，所以Git就因此产生树对象。<a id="more"></a></p>
 <h2 id="了解树对象"><a href="#了解树对象" class="headerlink" title="了解树对象"></a><strong>了解树对象</strong></h2><p>​     Git 以一种类似于 UNIX 文件系统的方式存储内容，但作了些许简化。 所有内容均以树对象和数据对象的形式存储。 <strong>一个树对象包含了一条或多条树对象记录（tree entry），每条记录含有一个指向数据对象或者子树对象的 SHA-1 指针，以及相应的模式、类型、文件名信息。</strong> 例如，某项目当前对应的最新树对象可能是这样的：</p>
-<img src="/article/34569/22.png">
+
 
 <p>这个项目根目录下包含<code>README</code>、<code>Rakefile</code>文件和<code>lib</code>文件夹，在lib文件夹中有一个<code>simplegit.rb</code>文件。</p>
 <p>我们可以通过将<code>树对象</code>理解为Git的“文件夹”，每一个树对象可以引用若干个文件对象（blob），和若干个树对象（tree）。</p>
 <h2 id="查看Git的树对象"><a href="#查看Git的树对象" class="headerlink" title="查看Git的树对象"></a><strong>查看Git的树对象</strong></h2><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git cat-file -p master^&#123;tree&#125;</span><br><span class="line"><span class="hljs-meta">#</span> master^&#123;tree&#125; 语法表示 master 分支上最新的提交所指向的树对象</span><br></pre></td></tr></table></figure>
 
-<img src="/article/34569/23.png">
+
 
 <p>​    我们可以看到，在<code>git_learning</code>这个仓库中，master分支最新的tree有三条记录，第一条和第三条指向一个文件对象，而第二条记录指向一个树对象，所以<code>css</code>是一个文件夹。</p>
-<img src="/article/34569/24.png">
+
 
 <p>​    可以看到这个树对象中只有一条记录，指向一个<code>文件对象</code>，文件名叫<code>style.css</code></p>
 
@@ -475,7 +475,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -552,7 +552,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

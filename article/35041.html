@@ -184,7 +184,7 @@ var _hmt = _hmt || [];
         <div class="content">
             <p>​    前面我们提到了<code>tree</code>的概念，它解决了文件名的保存以及文件夹的层次结构的问题。但是我们每次提交都相当于保存了一个<code>树对象</code>，而每一次的提交都不一定修改了项目下的所有文件，那么就意味着总有一些树对象是可以在下次提交中重用的。<a id="more"></a>若想重用这些快照树，那么就必须记住以往创建的所有树对象。 并且，你也完全不知道是谁保存了这些快照，在什么时刻保存的，以及为什么保存这些快照。 而以上这些，正是提交对象（commit object）能为你保存的基本信息。</p>
 <p>​    下面我们给出一个提交对象、tree对象、blob对象的基本关系图：</p>
-<img src="/article/35041/25.png">
+
 
 <p>在上面的这个commit对象中，保存了<code>作者</code>、<code>提交者</code>、<code>提交信息</code>、<code>父提交对象</code>、此次提交的<code>根树对象</code>。</p>
 <h2 id="Git对象的理解"><a href="#Git对象的理解" class="headerlink" title="Git对象的理解"></a><strong>Git对象的理解</strong></h2><p>问题：新建一个仓库，在仓库中创建doc/readme文件，然后放入暂存区，放入暂存区后，此时Git仓库中有多少个对象？提交后Git仓库有多少个对象？</p>
@@ -198,18 +198,18 @@ var _hmt = _hmt || [];
 <p>此时我们查看<code>.git/objects</code>：</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> find .git/bojects</span><br></pre></td></tr></table></figure>
 
-<img src="/article/35041/26.png">
+
 
 <p>我们发现有一个对象，通过<code>git cat-file -t 980a0d5f19</code>可以看出这个对象是一个blob对象。</p>
 <h3 id="第四步：提交此次变更，然后查看此次变更后一共产生了多少个对象"><a href="#第四步：提交此次变更，然后查看此次变更后一共产生了多少个对象" class="headerlink" title="第四步：提交此次变更，然后查看此次变更后一共产生了多少个对象"></a><strong>第四步：提交此次变更，然后查看此次变更后一共产生了多少个对象</strong></h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git commit -m 'create doc/readme'</span><br><span class="line"><span class="hljs-meta">$</span> find .git/objects</span><br></pre></td></tr></table></figure>
 
-<img src="/article/35041/27.png">
+
 
 <p>此时我们看到一共创建了4个对象，我们使用<code>cat-file</code>命令查看对象的内容：</p>
-<img src="/article/35041/28.png">
+
 
 <p>下图就是这四个对象的继承图：</p>
-<img src="/article/35041/29.png">
+
         </div>
         
         <div class="level is-size-7 is-uppercase">
@@ -500,7 +500,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -577,7 +577,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

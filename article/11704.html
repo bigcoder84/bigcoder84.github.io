@@ -186,14 +186,14 @@ var _hmt = _hmt || [];
 <p>我们先进入<code>.git</code>目录，这个目录是一个隐藏目录，需要使用<code>ls -a</code>才能看到。</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> cd .git</span><br></pre></td></tr></table></figure>
 
-<p>​    <img src="/article/11704/13.png"></p>
+<p>​    </p>
 <h4 id="HEAD文件"><a href="#HEAD文件" class="headerlink" title="HEAD文件"></a>HEAD文件</h4><p>​    <strong><code>HEAD</code> 文件指示目前被检出的分支</strong></p>
 <p>​    该文件使用与指定当前工作目录正工作在哪个分支中，我们通过<code>cat或其他</code>命令查看这个文件内容：</p>
-<p>​    <img src="/article/11704/14.png"></p>
+<p>​    </p>
 <p>​    通过上面的HEAD我们可以看到，当前工作目录正工作在<code>master</code>分支下，如果我们更换分支，<code>HEAD</code>文件的内容也会随之改变。</p>
 <h4 id="refs文件夹"><a href="#refs文件夹" class="headerlink" title="refs文件夹"></a>refs文件夹</h4><p>​    <strong><code>refs</code> 目录存储指向数据（分支）的提交对象的指针</strong></p>
 <p>​    前面HEAD文件记录，当前工作的分支，就是引用refs文件夹中的文件。refs文件夹中有两个文件夹:</p>
-<p>​    <img src="/article/11704/16.png"></p>
+<p>​    </p>
 <ul>
 <li><p>tags文件夹：保存当前仓库的标签</p>
 </li>
@@ -204,7 +204,7 @@ var _hmt = _hmt || [];
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git config --local user.name "tjd" #local参数可以省略，默认就是local作用域</span><br></pre></td></tr></table></figure>
 
 <p>​    然后我们再使用<code>cat config</code>命令查看config文件中的内容：</p>
-<p>​    <img src="/article/11704/15.png"></p>
+<p>​    </p>
 <p>​    可以看到，由于我们为当前工作目录设置与全局user.name不同的值，所以系统就会在当前工作目录的config文件中记录用户设置的<code>-local</code>作用域的属性。</p>
 <p>​    <strong>我们可以直接更改这个文件中的内容，也能达到<code>$ git config --local user.name &quot;xxx&quot;</code>命令的效果。也就是说，我们在使用<code>git config --local user.name</code>命令查看<code>-local</code>作用域下的<code>user.name</code>就是读取这个文件中的内容。</strong></p>
 <h4 id="objects文件夹"><a href="#objects文件夹" class="headerlink" title="objects文件夹"></a>objects文件夹</h4><p>​    这个文件夹保存Git的对象。</p>
@@ -495,7 +495,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -572,7 +572,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

@@ -207,7 +207,7 @@ var _hmt = _hmt || [];
 <h2 id="分支合并"><a href="#分支合并" class="headerlink" title="分支合并"></a><strong>分支合并</strong></h2><h3 id="无分叉分支的合并"><a href="#无分叉分支的合并" class="headerlink" title="无分叉分支的合并"></a><strong>无分叉分支的合并</strong></h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch-name&gt; #无分叉的分支，直接合并（快进）</span><br></pre></td></tr></table></figure>
 
 <p>两个分支无冲突指：一个分支所指向的<code>commit</code>对象是另个一个分支的直接父<code>commit</code>节点。</p>
-<img src="/article/60933/30.png">
+
 
 <p>​    在上图中，C0、C1、C2、C3、C4都是<code>commit</code>对象，master、hotfix、iss53分别是三个分支（分支的实质是指向<code>commit</code>对象的一个指针），其中master分支指向的<code>commit</code>对象是hotfix和iss53的直接父节点，所以此时master与gotfix、iss53这两个分支中任何一个进行合并都是不会产生冲突的。</p>
 <p><strong>在进行无冲突分支合并时，要以较早的版本为基准进行合并：</strong></p>
@@ -215,15 +215,15 @@ var _hmt = _hmt || [];
 
 <p>​    换句话说，当你试图合并两个分支时，如果顺着一个分支走下去能够到达另一个分支，那么 Git 在合并两者的时候，只会简单的将指针向前推进（指针右移），因为这种情况下的合并操作没有需要解决的分歧——这就叫做 “快进（fast-forward）”。</p>
 <h3 id="分叉分支的合并"><a href="#分叉分支的合并" class="headerlink" title="分叉分支的合并"></a><strong>分叉分支的合并</strong></h3><p>在很多时候，分支可能会产生分叉，也就是下面这个情况：</p>
-<img src="/article/60933/31.png">
+
 
 <p>此种情况，依旧是使用<code>merge</code>命令</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge iss53 #在master分支中使用该命令</span><br></pre></td></tr></table></figure>
 
 <p>​    在这种情况下，你的开发历史从一个更早的地方开始分叉开来（diverged）。 因为，<code>master</code> 分支所在提交并不是 <code>iss53</code> 分支所在提交的直接祖先，Git 不得不做一些额外的工作。 出现这种情况的时候，Git 会使用两个分支的末端所指的快照（<code>C4</code> 和 <code>C5</code>）以及这两个分支的工作祖先（<code>C2</code>），做一个简单的三方合并。</p>
-<img src="/article/60933/32.png">
 
-<img src="/article/60933/33.png">
+
+
 
 <p>​    和之前将分支指针向前推进所不同的是，Git 将此次三方合并的结果做了一个新的快照并且自动创建一个新的提交指向它。 这个被称作一次合并提交，它的特别之处在于他有不止一个父提交。</p>
 <h3 id="冲突解决"><a href="#冲突解决" class="headerlink" title="冲突解决"></a><strong>冲突解决</strong></h3><p>​    有时候合并操作不会如此顺利。 如果你在两个不同的分支中，对同一个文件的同一个部分进行了不同的修改，Git 就没法干净的合并它们。 此时 Git 做了合并，但是没有自动地创建一个新的合并提交。 <strong>Git 会暂停下来</strong>，等待你去解决合并产生的冲突。 你可以在合并冲突后的任意时刻使用 <code>git status</code> 命令来查看那些因包含合并冲突而处于未合并（unmerged）状态的文件：</p>
@@ -543,7 +543,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -620,7 +620,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

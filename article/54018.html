@@ -183,7 +183,7 @@ var _hmt = _hmt || [];
         </h1>
         <div class="content">
             <p>最近博主在搭建Mybatis项目时遇到了一问题，在一切配置妥当后，开始运行测试代码，但是此时控制台无情的抛出了异常<a id="more"></a>：</p>
-<img src="/article/54018/28.png">
+
 
 
 
@@ -197,11 +197,11 @@ var _hmt = _hmt || [];
 <li>Mapper接口方法的输出参数类型和mapper.xml中定义的每个sql的resultType的类型相同。</li>
 </ol>
 <p>​    检查完成后，我发现都没有问题，那就奇怪了，这问题到底出在哪了呢？此时我看来一下编译后的目标文件夹中，发现我的mapper配置文件并没有被编译进去。</p>
-<img src="/article/54018/29.png">
+
 
 <p>原来在典型的maven工程中，目录结构有：<code>src/main/java</code>和<code>src/main/resources</code>，前者是用来存放java源代码的，后者则是存放一些资源文件，比如配置文件等，<strong>在默认的情况下maven打包的时候，对于src/main/java目录只打包源代码，而不会打包其他文件</strong>。所以此时如果把对应的mapper文件放到<code>src/main/java</code>目录下时，不会打包到最终的jar文件夹中，也不会输出到<code>target</code>文件夹中，由于在进行单元测试的时候执行的是<code>/target</code>目录下<code>/test-classes</code>下的代码，所以在测试的时候也不会成功。</p>
 <h2 id="如何解决资源拷贝问题"><a href="#如何解决资源拷贝问题" class="headerlink" title="如何解决资源拷贝问题"></a>如何解决资源拷贝问题</h2><h3 id="方式一：默认Maven构建"><a href="#方式一：默认Maven构建" class="headerlink" title="方式一：默认Maven构建"></a>方式一：默认Maven构建</h3><p><strong>为了实现在maven默认环境下打包时，Mybatis的接口和mapper文件在同一包中，可以通过将接口文件放在src/main/java某个包中，而在src/main/resources目录中建立同样的包</strong>，这是一种约定优于配置的方式，这样在maven打包的时候就会将<code>src/main/java</code>和<code>src/main/resources</code>相同包下的文件合并到同一包中。</p>
-<img src="/article/54018/30.png">
+
 
 
 
@@ -496,7 +496,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -573,7 +573,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

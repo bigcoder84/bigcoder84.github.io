@@ -180,11 +180,11 @@ var _hmt = _hmt || [];
 <a id="more"></a>
 
 <p>​    <strong>差异式比较示意图</strong>：</p>
-<img src="/article/64185/1.png">
+
 
 <p>​    Git 不按照以上方式对待或保存数据。 反之，Git 更像是把数据看作是对小型文件系统的一组快照。 每次你提交更新，或在 Git 中保存项目状态时，它主要对当时的全部文件制作一个快照并保存这个快照的索引。 为了高效，<font color="red"><strong>如果文件没有修改，Git 不再重新存储该文件，而是只保留一个链接指向之前存储的文件</strong></font>。 Git 对待数据更像是一个 <strong>快照流</strong>。</p>
 <p>​    <strong>快照记录示意图</strong>：</p>
-<img src="/article/64185/2.png">
+
 
 
 
@@ -195,7 +195,7 @@ var _hmt = _hmt || [];
 <p>​    Git 中使用这种哈希值的情况很多，你将经常看到这种哈希值。 实际上，Git 数据库中保存的信息都是以文件内容的哈希值来索引，而不是文件名。</p>
 <h2 id="Git-一般只添加数据"><a href="#Git-一般只添加数据" class="headerlink" title="Git 一般只添加数据"></a>Git 一般只添加数据</h2><p>​    你执行的 Git 操作，几乎只往 Git 数据库中增加数据。 很难让 Git 执行任何不可逆操作，或者让它以任何方式清除数据。 同别的 VCS 一样，未提交更新时有可能丢失或弄乱修改的内容；但是一旦你提交快照到 Git 中，就难以再丢失数据，特别是如果你定期的推送数据库到其它仓库的话。</p>
 <h2 id="Git的三种状态"><a href="#Git的三种状态" class="headerlink" title="Git的三种状态"></a>Git的三种状态</h2><p>​    Git 有三种状态，你的文件可能处于其中之一：<strong>已提交</strong>（committed）、<strong>已修改</strong>（modified）和<strong>已暂存</strong>（staged）。 已提交表示数据已经安全的保存在本地数据库中。 已修改表示修改了文件，但还没保存到数据库中。 已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</p>
-<img src="/article/64185/3.png">
+
 
 <p><strong>Git 仓库目录（工作目录）</strong> ：Git 用来保存项目的元数据和对象数据库的地方。 这是 Git 中最重要的部分，从其它计算机克隆仓库时，拷贝的就是这里的数据。</p>
 <p><strong>工作目录</strong>：工作目录是对项目的某个版本独立提取出来的内容。 这些从 Git 仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
@@ -497,7 +497,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -574,7 +574,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

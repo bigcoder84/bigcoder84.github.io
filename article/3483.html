@@ -184,7 +184,7 @@ var _hmt = _hmt || [];
 <p>​        我们进入到.git目录下，查看objects文件夹的结构：</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> cd .git</span><br><span class="line"><span class="hljs-meta">$</span> find objects</span><br></pre></td></tr></table></figure>
 
-<img src="/article/3483/19.png">
+
 
 <p>​    我们可以看到objects目录下，只有两个空的文件夹：info、pack</p>
 <h2 id="向”数据库“中存入数据"><a href="#向”数据库“中存入数据" class="headerlink" title="向”数据库“中存入数据"></a><strong>向”数据库“中存入数据</strong></h2><p>​    我们先在git的工作目录中创建一个文件，例如<code>hello.txt</code>，然后我们能通过<code>hash-object</code>命令将这个文件写入“数据库”。</p>
@@ -193,21 +193,21 @@ var _hmt = _hmt || [];
 <p>​    或者我们可以使用<code>标准输入</code>存入数据</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> echo 'Hello World!' | git hash-object -w --stdin</span><br><span class="line"><span class="hljs-meta">#</span> --stdin 该选项指示 hash-object 命令从标准输入读取内容；若不指定此选项，则须在命令尾部给出待存储文件的路径。</span><br></pre></td></tr></table></figure>
 
-<img src="/article/3483/17.png">
+
 
 <p>​    我们可以看到将文件存入后，系统会返回一个SHA-1的哈希值。一个文件对应一条内容，以该内容加上特定头部信息一起的 SHA-1 校验和为文件命名。 校验和的<strong>前两个字符用于命名子目录，余下的 38 个字符则用作文件名。</strong></p>
 <p>​    我们再次进入.git目录执行<code>find objects</code>即可看到刚刚我们保存的hello.txt文件（第一次初始化的git仓库，.git/objects目录下只有pack、info这两个文件夹）</p>
-<img src="/article/3483/18.png">
+
 
 <h2 id="从”数据库“中取出数据"><a href="#从”数据库“中取出数据" class="headerlink" title="从”数据库“中取出数据"></a>从”数据库“中取出数据</h2><p>​    可以通过 <code>cat-file</code> 命令从 Git 那里取回数据。 这个命令简直就是一把剖析 Git 对象的瑞士军刀。 为 <code>cat-file</code> 指定 <code>-p</code> 选项可指示该命令自动判断内容的类型，并为我们显示格式友好的内容：</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git cat-file -p 802992c4220de19a90767f3000a79a31b98d0df7</span><br><span class="line"><span class="hljs-meta">#</span> -p 指示该命令自动判断内容的类型</span><br></pre></td></tr></table></figure>
 
-<img src="/article/3483/20.png">
+
 
 <h2 id="Git-objects的理解"><a href="#Git-objects的理解" class="headerlink" title="Git objects的理解"></a>Git objects的理解</h2><p>​    在将文件存入Git objects中时，文件名并没有被保存，仅保存了文件的内容。 <strong>上述类型的对象我们称之为数据对象（blob object）</strong>。 利用 <code>cat-file -t</code> 命令，可以让 Git 告诉我们其内部存储的任何对象类型，只要给定该对象的 SHA-1 值：</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">$</span> git cat-file -t 802992c4220de19a90767f3000a79a31b98d0df7</span><br><span class="line"><span class="hljs-meta">#</span> -t 指示cat-file命令返回该对象的类型（type）</span><br></pre></td></tr></table></figure>
 
-<img src="/article/3483/21.png">
+
 
 
         </div>
@@ -500,7 +500,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -577,7 +577,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

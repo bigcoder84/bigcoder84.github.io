@@ -179,12 +179,12 @@ var _hmt = _hmt || [];
             <h2 id="集中式版本控制系统（CVCS）"><a href="#集中式版本控制系统（CVCS）" class="headerlink" title="集中式版本控制系统（CVCS）"></a>集中式版本控制系统（CVCS）</h2><p>​    <strong><code>集中化的版本控制系统</code></strong>（Centralized Version Control Systems，简称 CVCS）应运而生。 这类系统，诸如 CVS、Subversion 以及 Perforce 等，都有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们都通过客户端连到这台服务器，取出最新的文件或者提交更新。 多年以来，这已成为版本控制系统的标准做法。</p>
 <a id="more"></a>
 
-<img src="/article/57074/1.png">
+
 
 <p>​    <strong>优点</strong>：每个人都可以在一定程度上看到项目中的其他人正在做些什么。 而管理员也可以轻松掌控每个开发者的权限，并且管理一个 CVCS 要远比在各个客户端上维护本地数据库来得轻松容易。</p>
 <p>​    <strong>缺点</strong>：中央服务器存在单点故障。 如果宕机一小时，那么在这一小时内，谁都无法提交更新，也就无法协同工作。 如果中心数据库所在的磁盘发生损坏，又没有做恰当备份，毫无疑问你将丢失所有数据——包括项目的整个变更历史，只剩下人们在各自机器上保留的单独快照。 本地版本控制系统也存在类似问题，只要整个项目的历史记录被保存在单一位置，就有丢失所有历史更新记录的风险。</p>
 <h2 id="分布式版本控制系统（DVCS）"><a href="#分布式版本控制系统（DVCS）" class="headerlink" title="分布式版本控制系统（DVCS）"></a>分布式版本控制系统（DVCS）</h2><p>​    <strong>分布式版本控制系统</strong>（Distributed Version Control System，简称 DVCS）面世了。 在这类系统中，像 Git、Mercurial、Bazaar 以及 Darcs 等，<font color="red"><strong><code>客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来</code></strong></font>。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的克隆操作，实际上都是一次对代码仓库的完整备份。</p>
-<img src="/article/57074/2.png">
+
 
 
 
@@ -468,7 +468,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -545,7 +545,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

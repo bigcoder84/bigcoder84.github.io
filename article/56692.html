@@ -371,7 +371,7 @@ var _hmt = _hmt || [];
 </tr>
 </tbody></table>
 <p>​    读者可以从Maven命令行输出中看到项目构建过程中执行了哪些插件目标，例如我们执行 mvn clean package命令输出如下信息：</p>
-<img src="/article/56692/15.png">
+
 
 <h3 id="自定义绑定"><a href="#自定义绑定" class="headerlink" title="自定义绑定"></a><strong>自定义绑定</strong></h3><p>​        除了内置绑定以外，用户还能够自己选择将某个插件目标绑定到生命周期的某个阶段上。</p>
 <p>​        一个常见的例子是创建项目的源码JAR包，内置的插件绑定关系中并没有涉及到当前任务，因此需要用户自行配置。maven-source-plugin可以帮助我们完成这个任务，它的jar-no-fork目标能够将项目的主代码打包成jar文件，我们可以将其绑定到default生命周期的verify阶段上，在执行完成测试后和安装构件前创建源码jar包：</p>
@@ -404,7 +404,7 @@ var _hmt = _hmt || [];
 <h2 id="查看插件的描述信息"><a href="#查看插件的描述信息" class="headerlink" title="查看插件的描述信息"></a><strong>查看插件的描述信息</strong></h2><p>​        前面我们提到了目标前缀的概念，我们到底如何查看插件的目标前缀呢？我们可以借助<code>maven-help-plugin</code>插件来实现这个任务。</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#</span> 注意：在描述插件时可以省略版本信息，让Maven自动获取最新版本来进行表述</span><br><span class="line"><span class="hljs-meta">$</span> mvn help:describe -D plugin=org.apache.maven.plugins:maven-dependency-plugin:2.1</span><br></pre></td></tr></table></figure>
 
-<img src="/article/56692/16.png">
+
         </div>
         
         <div class="level is-size-7 is-uppercase">
@@ -739,7 +739,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -816,7 +816,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

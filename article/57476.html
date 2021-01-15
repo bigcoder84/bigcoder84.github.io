@@ -190,7 +190,7 @@ var _hmt = _hmt || [];
 </ul>
 <p>​    在第一点中，执行者指的是代理对象的执行模板，例如在JDK动态代理中，实现<code>InvocationHandler</code>接口的类就是代理类中方法的执行模板。而在cglib代理中执行模板需要实现<code>MethodInterceptor</code>。</p>
 <h2 id="使用cglib需要做的准备"><a href="#使用cglib需要做的准备" class="headerlink" title="使用cglib需要做的准备"></a><strong>使用cglib需要做的准备</strong></h2><p>JDK动态代理由于是JDK自带的，所以我们不需要在项目中引入第三方jar，但是cglib需要引入两个jar包：</p>
-<img src="/article/57476/26.png">
+
 
 <h2 id="cglib代理具体实例"><a href="#cglib代理具体实例" class="headerlink" title="cglib代理具体实例"></a><strong>cglib代理具体实例</strong></h2><h3 id="创建被代理类"><a href="#创建被代理类" class="headerlink" title="创建被代理类"></a><strong>创建被代理类</strong></h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">package</span> _6代理模式.CGlib代理;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserService</span>  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addUser</span><span class="hljs-params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">"添加用户"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteUser</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">"删除用户"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -200,7 +200,7 @@ var _hmt = _hmt || [];
 <h3 id="通过cglib生成代理对象"><a href="#通过cglib生成代理对象" class="headerlink" title="通过cglib生成代理对象"></a><strong>通过cglib生成代理对象</strong></h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestCglib</span> </span>&#123;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;</span><br><span class="line">       	Enhancer enhancer = <span class="hljs-keyword">new</span> Enhancer();</span><br><span class="line">        <span class="hljs-comment">//设置父类</span></span><br><span class="line">        enhancer.setSuperclass(UserService<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;</span><br><span class="line">        <span class="hljs-comment">//设置执行者</span></span><br><span class="line">        enhancer.setCallback(<span class="hljs-keyword">new</span> Executent());</span><br><span class="line">        <span class="hljs-comment">//创建代理对象</span></span><br><span class="line">        UserService userService = (UserService) enhancer.create();</span><br><span class="line">        userService.addUser();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>执行结果：</strong></p>
-<img src="/article/57476/27.png">
+
         </div>
         
         <div class="level is-size-7 is-uppercase">
@@ -495,7 +495,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/8567.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/thumbnails/h2.jpg" alt="什么是B-树">
+                    <img class="thumbnail" src="/gallery/thumbnails/f6.jpg" alt="什么是B-树">
                 </p>
             </a>
             
@@ -572,7 +572,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2020 听到微笑&nbsp;
+                &copy; 2021 听到微笑&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

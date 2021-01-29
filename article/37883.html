@@ -15,12 +15,12 @@
 <meta property="og:site_name" content="听到微笑的博客">
 <meta property="og:description" content="Docker Swarm提供了基本的集群能力，能够使多个Docker Engine组合成一个group，提供多容器服务。Swarm使用标准的Docker API，启动容器可以直接使用docker run命令。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://image.bigcoder.cn/20210116215841.png">
-<meta property="og:updated_time" content="2021-01-16T13:58:54.056Z">
+<meta property="og:image" content="http://image.bigcoder.cn/20210116215841.png">
+<meta property="og:updated_time" content="2021-01-29T09:14:42.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DockerSwarm架构详解(转载)">
 <meta name="twitter:description" content="Docker Swarm提供了基本的集群能力，能够使多个Docker Engine组合成一个group，提供多容器服务。Swarm使用标准的Docker API，启动容器可以直接使用docker run命令。">
-<meta name="twitter:image" content="https://image.bigcoder.cn/20210116215841.png">
+<meta name="twitter:image" content="http://image.bigcoder.cn/20210116215841.png">
 
 
 
@@ -151,7 +151,7 @@ var _hmt = _hmt || [];
     
     <div class="card-image">
         <span class="image is-7by1">
-            <img class="thumbnail" src="https://image.bigcoder.cn/20210116215841.png" alt="DockerSwarm架构详解(转载)">
+            <img class="thumbnail" src="http://image.bigcoder.cn/20210116215841.png" alt="DockerSwarm架构详解(转载)">
         </span>
     </div>
     
@@ -186,7 +186,7 @@ var _hmt = _hmt || [];
 <a id="more"></a>
 
 <h3 id="一-基本架构"><a href="#一-基本架构" class="headerlink" title="一. 基本架构"></a>一. 基本架构</h3><p>Docker Swarm提供了基本的集群能力，能够使多个Docker Engine组合成一个group，提供多容器服务。Swarm使用标准的Docker API，启动容器可以直接使用docker run命令。Swarm更核心的则是关注如何选择一个主机并在其上启动容器，最终运行服务。 Docker Swarm基本架构，如下图所示：</p>
-<p><img src="https://image.bigcoder.cn/20210116215000.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215000.png" alt></p>
 <p>如上图所示，Swarm Node表示加入Swarm集群中的一个Docker Engine实例，基于该Docker Engine可以创建并管理多个Docker容器。其中，最开始创建Swarm集群的时候，Swarm Manager便是集群中的第一个Swarm Node。在所有的Node中，又根据其职能划分为Manager Node和Worker Node。</p>
 <h3 id="1-1-Manager-Node"><a href="#1-1-Manager-Node" class="headerlink" title="1.1 Manager Node"></a>1.1 Manager Node</h3><p>Manger 节点，顾名思义，是进行 Swarm 集群的管理工作的，它的管理工作集中在如下部分，</p>
 <ul>
@@ -204,23 +204,23 @@ var _hmt = _hmt || [];
 </ul>
 <h3 id="1-2-Worker-Node"><a href="#1-2-Worker-Node" class="headerlink" title="1.2  Worker Node"></a>1.2  Worker Node</h3><p>Worker Node接收由Manager Node调度并指派的Task，启动一个Docker容器来运行指定的服务，并且Worker Node需要向Manager Node汇报被指派的Task的执行状态。</p>
 <h3 id="1-3-更换角色"><a href="#1-3-更换角色" class="headerlink" title="1.3 更换角色"></a>1.3 更换角色</h3><p>通过 docker node promote 命令将一个 Worker 节点提升为 Manager 节点。通常情况下，该命令使用在维护的过程中，需要将 Manager 节点占时下线进行维护操作；同样可以使用 docker node demote 将某个 manager 节点降级为 worker 节点。</p>
-<h2 id="二-设计架构"><a href="#二-设计架构" class="headerlink" title="二. 设计架构"></a>二. 设计架构</h2><p><img src="https://image.bigcoder.cn/20210116215007.png" alt></p>
+<h2 id="二-设计架构"><a href="#二-设计架构" class="headerlink" title="二. 设计架构"></a>二. 设计架构</h2><p><img src="http://image.bigcoder.cn/20210116215007.png" alt></p>
 <p>从前文可知， Swarm 集群的管理工作是由manager节点实现。如上图所示，manager节点实现的功能主要包括：node discovery，scheduler,cluster管理等。同时，为了保证Manager 节点的高可用，Manager 节点需要时刻维护和保存当前 Swarm 集群中各个节点的一致性状态。在保证一致性上，Manager 节点采用 <a href="https://raft.github.io/raft.pdf" target="_blank" rel="noopener">Raft</a> 协议来保证分布式场景下的数据一致性；</p>
 <p>Docker Swarm内置了Raft一致性算法，可以保证分布式系统的数据保持一致性同步。Etcd, Consul等高可用键值存储系统也是采用了这种算法。这个算法的作用简单点说就是随时保证集群中有一个Leader，由Leader接收数据更新，再同步到其他各个Follower节点。在Swarm中的作用表现为当一个Leader 节点 down掉时，系统会立即选取出另一个Leader节点，由于这个节点同步了之前节点的所有数据，所以可以无缝地管理集群。</p>
 <p>Raft的详细解释可以参考<a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">《The Secret Lives of Data–Raft: Understandable Distributed Consensus》</a>。</p>
 <h3 id="2-1-跨主机容器通信"><a href="#2-1-跨主机容器通信" class="headerlink" title="2.1 跨主机容器通信"></a>2.1 跨主机容器通信</h3><p>Docker Swarm 内置的跨主机容器通信方案是overlay网络，这是一个基于vxlan协议的网络实现。VxLAN 可将二层数据封装到 UDP 进行传输，VxLAN 提供与 VLAN 相同的以太网二层服务，但是拥有更强的扩展性和灵活性。 overlay 通过虚拟出一个子网，让处于不同主机的容器能透明地使用这个子网。所以跨主机的容器通信就变成了在同一个子网下的容器通信，看上去就像是同一主机下的bridge网络通信。</p>
 <p>为支持容器跨主机通信，Docker 提供了 overlay driver，使用户可以创建基于 VxLAN 的 overlay 网络。其实，docker 会创建一个 bridge 网络 “docker_gwbridge”，为所有连接到 overlay 网络的容器提供访问外网的能力。``docker network inspect docker_gwbridge` 查看网络信息。</p>
-<p><img src="https://image.bigcoder.cn/20210116215015.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215015.png" alt></p>
 <p>下面我们讨论下overlay 网络的具体实现：</p>
 <p>docker 会为每个 overlay 网络创建一个独立的 network namespace，其中会有一个 linux bridge br0，endpoint 还是由 veth pair 实现，一端连接到容器中（即 eth0），另一端连接到 namespace 的 br0 上。</p>
 <p>br0 除了连接所有的 endpoint，还会连接一个 vxlan 设备，用于与其他 host 建立 vxlan tunnel。容器之间的数据就是通过这个 tunnel 通信的。逻辑网络拓扑结构如图所示：</p>
-<p><img src="https://image.bigcoder.cn/20210116215022.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215022.png" alt></p>
 <h3 id="2-2-服务发现"><a href="#2-2-服务发现" class="headerlink" title="2.2 服务发现"></a>2.2 服务发现</h3><p>docker Swarm mode下会为每个节点的docker engine内置一个DNS server，各个节点间的DNS server通过control plane的gossip协议互相交互信息。此处DNS server用于容器间的服务发现。swarm mode会为每个 –net=自定义网络的service分配一个DNS entry。目前必须是自定义网络，比如overaly。而bridge和routing mesh的service，是不会分配DNS的。</p>
 <p>那么，下面就来详细介绍服务发现的原理。</p>
 <p>每个Docker容器都有一个DNS解析器，它将DNS查询转发到docker engine，该引擎充当DNS服务器。docker 引擎收到请求后就会在发出请求的容器所在的所有网络中，检查域名对应的是不是一个容器或者是服务，如果是，docker引擎就会从存储的key-value建值对中查找这个容器名、任务名、或者服务名对应的IP地址，并把这个IP地址或者是服务的虚拟IP地址返回给发起请求的域名解析器。</p>
 <p>由上可知，docker的服务发现的作用范围是网络级别，也就意味着只有在同一个网络上的容器或任务才能利用内嵌的DNS服务来相互发现，不在同一个网络里面的服务是不能解析名称的，另外，为了安全和性能只有当一个节点上有容器或任务在某个网络里面时，这个节点才会存储那个网络里面的DNS记录。</p>
 <p>如果目的容器或服务和源容器不在同一个网络里面，Docker引擎会把这个DNS查询转发到配置的默认DNS服务 。</p>
-<p><img src="https://image.bigcoder.cn/20210116215027.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215027.png" alt></p>
 <p>在上面的例子中，总共有两个服务myservice和client，其中myservice有两个容器，这两个服务在同一个网里面。在client里针对docker.com和myservice各执行了一个curl操作，下面时执行的流程：</p>
 <ul>
 <li>为了client解析docker.com和myservice，DNS查询进行初始化</li>
@@ -230,7 +230,7 @@ var _hmt = _hmt || [];
 </ul>
 <h3 id="2-3-负载均衡"><a href="#2-3-负载均衡" class="headerlink" title="2.3 负载均衡"></a>2.3 负载均衡</h3><p>负载均衡分为两种：Swarm集群内的service之间的相互访问需要做负载均衡，称为内部负载均衡（Internal LB）；从Swarm集群外部访问服务的公开端口，也需要做负载均衡，称外部部负载均衡(Exteral LB or Ingress LB)。</p>
 <h4 id="2-3-1-Internal-LB"><a href="#2-3-1-Internal-LB" class="headerlink" title="2.3.1 Internal LB"></a>2.3.1 Internal LB</h4><p>内部负载均衡就是我们在上一段提到的服务发现，集群内部通过DNS访问service时，Swarm默认通过VIP（virtual IP）、iptables、IPVS转发到某个容器。</p>
-<p><img src="https://image.bigcoder.cn/20210116215043.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215043.png" alt></p>
 <p>当在docker swarm集群模式下创建一个服务时，会自动在服务所属的网络上给服务额外的分配一个虚拟IP，当解析服务名字时就会返回这个虚拟IP。对虚拟IP的请求会通过overlay网络自动的负载到这个服务所有的健康任务上。这个方式也避免了客户端的负载均衡，因为只有单独的一个IP会返回到客户端，docker会处理虚拟IP到具体任务的路由，并把请求平均的分配给所有的健康任务。</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#</span> 创建overlay网络：mynet </span><br><span class="line"><span class="hljs-meta">$</span> docker network create -d overlay mynet  </span><br><span class="line">a59umzkdj2r0ua7x8jxd84dhr </span><br><span class="line"><span class="hljs-meta">#</span> 利用mynet网络创建myservice服务，并复制两份  </span><br><span class="line"><span class="hljs-meta">$</span> docker service create --network mynet --name myservice --replicas 2 busybox ping localhost  </span><br><span class="line">78t5r8cr0f0h6k2c3k7ih4l6f5</span><br><span class="line"><span class="hljs-meta">#</span> 通过下面的命令查看myservice对应的虚拟IP </span><br><span class="line"><span class="hljs-meta">$</span> docker service inspect myservice  </span><br><span class="line">...</span><br><span class="line">"VirtualIPs": [ </span><br><span class="line">	&#123;  </span><br><span class="line">     "NetworkID": "a59umzkdj2r0ua7x8jxd84dhr",  </span><br><span class="line">     			"Addr": "10.0.0.3/24"  </span><br><span class="line">      &#125;,  </span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
@@ -240,7 +240,7 @@ var _hmt = _hmt || [];
 <p>启动服务后，你可以为应用程序创建外部DNS记录，并将其映射到任何或所有Docker swarm节点。你无需担心你的容器具体运行在那个节点上，因为有了路由网这个特性后，你的集群看起来就像是单独的一个节点一样。</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#</span>在集群中创建一个复制两份的服务，并暴露在8000端口  </span><br><span class="line"><span class="hljs-meta">$</span> docker service create --name app --replicas 2 --network appnet --publish 8000:80 nginx</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://image.bigcoder.cn/20210116215048.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215048.png" alt></p>
 <p>上面这个图表明了路由网是怎么工作的：</p>
 <ul>
 <li>服务（app）拥有两份复制，并把端口映射到外部端口的8000</li>
@@ -257,11 +257,11 @@ var _hmt = _hmt || [];
 <li>指定一个滚动更新的策略 (Rolling Update Policy)</li>
 <li>指定多少个 Task 的副本 (replicas) 在 Swarm 集群中同时存在</li>
 </ul>
-<h4 id="2-4-1-服务和任务"><a href="#2-4-1-服务和任务" class="headerlink" title="2.4.1 服务和任务"></a>2.4.1 服务和任务</h4><p><img src="https://image.bigcoder.cn/20210116215054.png" alt></p>
+<h4 id="2-4-1-服务和任务"><a href="#2-4-1-服务和任务" class="headerlink" title="2.4.1 服务和任务"></a>2.4.1 服务和任务</h4><p><img src="http://image.bigcoder.cn/20210116215054.png" alt></p>
 <p>Services，Tasks 和 Containers 之间的关系可以用上面这张图来描述。来看这张图的逻辑，表示用户想要通过 Manager 节点部署一个有 3 个副本的 Nginx 的 Service，Manager 节点接收到用户的 Service definition 后，便开始对该 Service 进行调度，将会在当前可用的Worker（或者Manager ）节点中启动相应的 Tasks 以及相关的副本；所以可以看到，Service 实际上是 Task 的定义，而 Task 则是执行在节点上的程序。</p>
 <p>Task 是什么呢？其实就是一个 Container，只是，在 Swarm 中，每个 Task 都有自己的名字和编号，如图，比如 nginx.1、nginx.2 和 nginx.3，这些 Container 各自运行在各自的 node 上，当然，一个 node 上可以运行多个 Container；</p>
 <h4 id="2-4-2-任务调度"><a href="#2-4-2-任务调度" class="headerlink" title="2.4.2 任务调度"></a>2.4.2 任务调度</h4><p>Docker swarm mode 模式的底层技术实际上就是指的是调度器( scheduler )和编排器( orchestrator )；下面这张图展示了 Swarm mode 如何从一个 Service 的创建请求并且成功将该 Service 分发到两个 worker 节点上执行的过程。</p>
-<p><img src="https://image.bigcoder.cn/20210116215102.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215102.png" alt></p>
 <ul>
 <li><p>首先，看上半部分Swarm manager</p>
 <ol>
@@ -286,7 +286,7 @@ var _hmt = _hmt || [];
 <p>　　2）Spread 在同等条件下，Spread策略会选择运行容器最少的那台节点来运行新的容器，binpack策略会选择运行容器最集中的那台机器来运行新的节点。 使用Spread策略会使得容器会均衡的分布在集群中的各个节点上运行，一旦一个节点挂掉了只会损失少部分的容器。</p>
 <p>　　3）Binpack Binpack策略最大化的避免容器碎片化，就是说binpack策略尽可能的把还未使用的节点留给需要更大空间的容器运行，尽可能的把容器运行在 一个节点上面。(The binpack strategy causes Swarm to optimize for the container which is most packed.)</p>
 <h4 id="2-4-4-服务副本与全局服务"><a href="#2-4-4-服务副本与全局服务" class="headerlink" title="2.4.4 服务副本与全局服务"></a>2.4.4 服务副本与全局服务</h4><p>Docker Swarm支持服务的扩容缩容，Swarm通过<code>--mode</code>选项设置服务类型，提供了两种模式：一种是replicated，我们可以指定服务Task的个数（也就是需要创建几个冗余副本），这也是Swarm默认使用的服务类型；另一种是global，这样会在Swarm集群的每个Node上都创建一个服务。如下图所示（出自Docker官网），是一个包含replicated和global模式的Swarm集群：</p>
-<p><img src="https://image.bigcoder.cn/20210116215108.png" alt></p>
+<p><img src="http://image.bigcoder.cn/20210116215108.png" alt></p>
 <p>上图中，黄色表示的replicated模式下的Service Replicas，灰色表示global模式下Service的分布。</p>
 <p>在Swarm mode下使用Docker，可以实现部署运行服务、服务扩容缩容、删除服务、滚动更新等功能，下面我们详细说明。</p>
 <p><strong>本文转载至</strong>：<a href="https://zhoujinl.github.io/2018/10/19/docker-swarm-manager-ha/" target="_blank" rel="noopener">https://zhoujinl.github.io/2018/10/19/docker-swarm-manager-ha/</a> 作者：<a href="https://zhoujinl.github.io/" target="_blank" rel="noopener">Jalon Zhou</a></p>
@@ -576,7 +576,7 @@ var _hmt = _hmt || [];
             
             <a href="/article/37883.html" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="https://image.bigcoder.cn/20210116215841.png" alt="DockerSwarm架构详解(转载)">
+                    <img class="thumbnail" src="http://image.bigcoder.cn/20210116215841.png" alt="DockerSwarm架构详解(转载)">
                 </p>
             </a>
             
